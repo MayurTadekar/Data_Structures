@@ -61,7 +61,7 @@ static	size_t 		tree_height(p_node_t pnode)
 	}
 }
 
-static	status_t 	tree_generic_insert(p_node_t pnode, p_node_t n_node, p_compare_proc compare_proc)
+static	status_t 	tree_generic_insert(p_node_t pnode, p_node_t n_node, P_COMPARE_PROC compare_proc)
 {
 	// 	Variable
 	p_node_t walk = pnode;
@@ -147,7 +147,7 @@ static	void 		tree_transplant(tree_t ptree, p_node_t pnode, p_node_t t_pnode)
 		t_pnode->p_parent = pnode->p_parent;
 }
 
-static 	p_node_t 	tree_find_node(tree_t ptree, data_t s_data, p_compare_proc compare_proc)
+static 	p_node_t 	tree_find_node(tree_t ptree, data_t s_data, P_COMPARE_PROC compare_proc)
 {
 	//	Code
 	short ret = 0;
@@ -206,7 +206,7 @@ static	p_node_t 	tree_predecessor(p_node_t pnode)
 	return(walk);
 }
 
-static 	void		tree_inorder(p_node_t pnode, p_show_data_proc show_data_proc)
+static 	void		tree_inorder(p_node_t pnode, P_SHOW_DATA_PROC show_data_proc)
 {
 	//	Code
 	if( NULL == pnode )
@@ -218,7 +218,7 @@ static 	void		tree_inorder(p_node_t pnode, p_show_data_proc show_data_proc)
 	tree_inorder(pnode->p_right, show_data_proc);
 }
 
-static 	void		tree_preorder(p_node_t pnode, p_show_data_proc show_data_proc)
+static 	void		tree_preorder(p_node_t pnode, P_SHOW_DATA_PROC show_data_proc)
 {
 	//	Code
 	if( NULL == pnode )
@@ -230,7 +230,7 @@ static 	void		tree_preorder(p_node_t pnode, p_show_data_proc show_data_proc)
 	tree_preorder(pnode->p_right, show_data_proc);
 }
 
-static 	void		tree_postorder(p_node_t pnode, p_show_data_proc show_data_proc)
+static 	void		tree_postorder(p_node_t pnode, P_SHOW_DATA_PROC show_data_proc)
 {
 	//	Code
 	if( NULL == pnode )
@@ -242,7 +242,7 @@ static 	void		tree_postorder(p_node_t pnode, p_show_data_proc show_data_proc)
 	fprintf(stdout,"-");
 }
 
-static 	void		tree_postorder_destroy(tree_t ptree, p_node_t pnode, p_delete_data_proc delete_data_proc)
+static 	void		tree_postorder_destroy(tree_t ptree, p_node_t pnode, P_DELETE_DATA_PROC delete_data_proc)
 {
 	//	Code
 	if( NULL == pnode )
@@ -268,7 +268,7 @@ extern	tree_t		tree_create(void)
 	return(ptree);
 }
 
-extern	status_t	tree_insert(tree_t ptree, data_t data, p_compare_proc compare_proc)
+extern	status_t	tree_insert(tree_t ptree, data_t data, P_COMPARE_PROC compare_proc)
 {
 	//	Code
 	if( NULL == ptree	|| 
@@ -287,7 +287,7 @@ extern	status_t	tree_insert(tree_t ptree, data_t data, p_compare_proc compare_pr
 
 }
 
-extern	data_t		tree_delete(tree_t ptree, data_t data, p_compare_proc compare_proc)
+extern	data_t		tree_delete(tree_t ptree, data_t data, P_COMPARE_PROC compare_proc)
 {
 	//	Code
 	if( FAILURE == tree_check_root(ptree) ||
@@ -303,7 +303,7 @@ extern	data_t		tree_delete(tree_t ptree, data_t data, p_compare_proc compare_pro
 	return( tree_generic_delete(ptree, del_node) );
 }
 
-extern	void		tree_in_order_traversal(tree_t ptree, p_show_data_proc show_data_proc)
+extern	void		tree_in_order_traversal(tree_t ptree, P_SHOW_DATA_PROC show_data_proc)
 {
 	//	Code
 	fprintf(stdout,"\n{START}-");
@@ -314,7 +314,7 @@ extern	void		tree_in_order_traversal(tree_t ptree, p_show_data_proc show_data_pr
 	fprintf(stdout,"{END}");
 }
 
-extern	void		tree_pre_order_traversal(tree_t ptree, p_show_data_proc show_data_proc)
+extern	void		tree_pre_order_traversal(tree_t ptree, P_SHOW_DATA_PROC show_data_proc)
 {
 	//	Code
 	fprintf(stdout,"\n{START}-");
@@ -325,7 +325,7 @@ extern	void		tree_pre_order_traversal(tree_t ptree, p_show_data_proc show_data_p
 	fprintf(stdout,"{END}");
 }
 
-extern	void		tree_post_order_traversal(tree_t ptree, p_show_data_proc show_data_proc)
+extern	void		tree_post_order_traversal(tree_t ptree, P_SHOW_DATA_PROC show_data_proc)
 {
 	//	Code
 	fprintf(stdout,"\n{START}-");
@@ -337,7 +337,7 @@ extern	void		tree_post_order_traversal(tree_t ptree, p_show_data_proc show_data_
 }
 
 
-extern	data_t		tree_search(tree_t ptree, data_t s_data, p_compare_proc compare_proc)
+extern	data_t		tree_search(tree_t ptree, data_t s_data, P_COMPARE_PROC compare_proc)
 {
 	//	Code
 
@@ -349,7 +349,7 @@ extern	data_t		tree_search(tree_t ptree, data_t s_data, p_compare_proc compare_p
 	return(pnode->data);
 }
 
-extern	data_t 		tree_get_successor(tree_t ptree, data_t data, p_compare_proc compare_proc)
+extern	data_t 		tree_get_successor(tree_t ptree, data_t data, P_COMPARE_PROC compare_proc)
 {
 	//	Code
 	if( FAILURE == tree_check_root(ptree) )
@@ -362,7 +362,7 @@ extern	data_t 		tree_get_successor(tree_t ptree, data_t data, p_compare_proc com
 	return( tree_successor(pnode)->data );
 }
 
-extern	data_t 		tree_get_predecessor(tree_t ptree, data_t data, p_compare_proc compare_proc)
+extern	data_t 		tree_get_predecessor(tree_t ptree, data_t data, P_COMPARE_PROC compare_proc)
 {
 	//	Code
 	if( FAILURE == tree_check_root(ptree) )
@@ -375,7 +375,7 @@ extern	data_t 		tree_get_predecessor(tree_t ptree, data_t data, p_compare_proc c
 	return( tree_predecessor(pnode)->data );
 }
 
-extern 	status_t	tree_destroy(tree_t* pptree, p_delete_data_proc delete_data_proc)
+extern 	status_t	tree_destroy(tree_t* pptree, P_DELETE_DATA_PROC delete_data_proc)
 {
 	if( FAILURE == tree_check_root( *pptree ) ||
 		NULL == delete_data_proc)
