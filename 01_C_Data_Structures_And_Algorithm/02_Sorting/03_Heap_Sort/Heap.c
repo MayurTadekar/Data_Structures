@@ -73,7 +73,7 @@ void 	HeapSort(	int *arr,
 		while(1)
 		{
 			newVal = HeapifyMax(arr, 
-								j+1, 
+								j, 
 								oldVal,
 								p_getvalue,
 								p_compare,

@@ -54,6 +54,12 @@ size_t toInteger(char *str)
 int main(int argc, char **argv)
 {
 
+	if( argc < 2 )
+	{
+		printf("\nEnter number of elements:\n");
+		return(1);
+	}
+
 	srand(time(0));
 
 	int iArr = toInteger(argv[1]);
@@ -69,7 +75,7 @@ int main(int argc, char **argv)
 	t2 = clock();
 
 	long ms = timediff(t1, t2);
-	printf("Time to assign value in %d.%d ms\n", ms/1000, ms%1000);
+	printf("Time to assign value in %ds %d ms\n", ms/1000, ms - ((ms/1000)*1000));
 
 	/*printf("Before Heapifying:\n");
 	printf("{START}->");
@@ -96,7 +102,7 @@ int main(int argc, char **argv)
 	printf("{END}\n");*/
 
 	ms = timediff(t1, t2);
-	printf("Sorting Finished in %d.%d ms", ms/1000, ms%1000);
+	printf("Sorting Finished in %ds %d ms\n", ms/1000, ms - ((ms/1000)*1000));
 	printf("\n\n");
 
 	free(arr);
