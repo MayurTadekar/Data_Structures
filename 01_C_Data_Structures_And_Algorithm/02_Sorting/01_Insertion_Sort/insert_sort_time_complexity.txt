@@ -1,0 +1,35 @@
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\01_Insertion_Sort>main.exe  10
+
+Elements = 10
+Time to assign value in 0.0 ms
+Sorting Finished in 0.0 ms
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\01_Insertion_Sort>main.exe  100
+
+Elements = 100
+Time to assign value in 0.0 ms
+Sorting Finished in 0.0 ms
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\01_Insertion_Sort>main.exe  1000
+
+Elements = 1000
+Time to assign value in 0.0 ms
+Sorting Finished in 0.2 ms
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\01_Insertion_Sort>main.exe  10000
+
+Elements = 10000
+Time to assign value in 0.0 ms
+Sorting Finished in 0.248 ms
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\01_Insertion_Sort>main.exe  100000
+
+Elements = 100000
+Time to assign value in 0.2 ms
+Sorting Finished in 26.213 ms
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\01_Insertion_Sort>main.exe  1000000
+
+Elements = 1000000
+Time to assign value in 0.22 ms
+Sorting Finished in 2652.193 ms

@@ -2,6 +2,7 @@
 
 #pragma		once
 
+#include	<Iterator>
 #include	"LinkedList.hpp"
 
 //	Type & Typedefs
@@ -72,6 +73,7 @@ public:
 	size_t	size() const { return( vertices->size() ); }
 
 	Vertex* operator[](int index) {	return( (*vertices)[index] ); }
+
 };
 
 template<typename _T>

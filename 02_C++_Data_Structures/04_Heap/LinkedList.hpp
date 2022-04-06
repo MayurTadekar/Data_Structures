@@ -20,6 +20,9 @@ typedef 	int 	ret_t;
 template <class _T> 
 using 	P_SHOW_DATA = void(*)(_T data);
 
+template <class _T> 
+using 	P_DELETE_DATA = void(*)(_T data);
+
 template <class _T>
 using 	P_COMPARE_DATA = ret_t(*)(_T, _T);
 
@@ -54,10 +57,11 @@ private:
 	ret_t 	listGenericInsert(Node* first, Node* mid, Node* last);
 	_T 		listGenericRemove(Node* pnode);
 	Node* 	listLocateNode(_T e_data, P_COMPARE_DATA<_T> compare);
+	Node* 	listLocateNode(size_t index);
 
 public:
 	LinkedList() : length(0) { list = new Node((_T)NULL); };
-	~LinkedList();
+	~LinkedList() { delete(list); } 
 
 	ret_t 	listInsertFront(_T data);
 	ret_t	listInsertBack(_T data);
@@ -73,8 +77,12 @@ public:
 	_T 		listRemoveBefore(_T e_data, P_COMPARE_DATA<_T> compare);
 	_T 		listRemove();
 
+	void 	listDestroy();
+
 	bool 	listContains(_T e_data, P_COMPARE_DATA<_T> compare);
 	bool 	listIsEmpty();
+
+	void 	listSwap(size_t index1, size_t index2);
 
 	//LinkedList* listMerge(LinkedList*&, LinkedList*&);
 	void 	listAppend(LinkedList*);
@@ -93,23 +101,23 @@ public:
 
 	class Iterator
 	{
-	private:
-		const Node*	m_pCurrNode;
+		private:
+			const Node*	m_pCurrNode;
 
-	public:
-		Iterator() noexcept:
-			m_pCurrNode(list->pnext) {};
+		public:
+			Iterator() noexcept:
+				m_pCurrNode(list) {};
 
-		Iterator(const Node* pNode) noexcept :
-			m_pCurrNode(pNode) {};
+			Iterator(const Node* pNode) noexcept :
+				m_pCurrNode(pNode) {};
 
-		Iterator& operator=(Node* pNode);
-		Iterator& operator++();				//	Prefix Overloading
-		Iterator& operator++(_T);			//	Postfix Overloading
-		Iterator& operator--();
-		Iterator& operator--(_T);
-		bool 	operator!=(const Iterator& iterator);
-		_T 		operator*();
+			Iterator& operator=(Node* pNode);
+			Iterator& operator++();				//	Prefix Overloading
+			Iterator& operator++(_T);			//	Postfix Overloading
+			Iterator& operator--();
+			Iterator& operator--(_T);
+			bool 	operator!=(const Iterator& iterator);
+			_T 		operator*();
 	};
 
 	Iterator begin();
@@ -160,6 +168,22 @@ typename LinkedList<_T>::Node* 	LinkedList<_T>::listLocateNode(_T e_data, P_COMP
 	}
 	return(NULL);
 }
+
+template <class _T>
+typename LinkedList<_T>::Node* 	LinkedList<_T>::listLocateNode(size_t index)
+{
+	if( list == list->pnext )
+		return(NULL);
+
+	Node* prun = list;
+	
+	for( int i = 0 ; i <= index; ++i )
+	{
+		prun = prun->pnext;
+	}
+	return(prun);
+}
+
 
 //	Public Functions
 template <class _T>
@@ -242,7 +266,7 @@ _T	LinkedList<_T>::listRemovePosition(size_t position)
 		return((_T)NULL);
 
 	Node *prun = list->pnext;
-	for(int i = 1; i <= position; ++i)
+	for(int i = 0; i < position; ++i)
 	{
 		prun = prun->pnext;
 	}
@@ -277,6 +301,16 @@ _T	LinkedList<_T>::listRemove()
 {
 	return( listRemoveBack() );
 }
+
+template <class _T>
+void 	LinkedList<_T>::listDestroy()
+{
+	while( length != 0 )
+	{
+		delete ( listRemoveFront() );
+	}
+}
+
 
 template <class _T>
 bool 	LinkedList<_T>::listContains(_T e_data, P_COMPARE_DATA<_T> compare)
@@ -368,11 +402,25 @@ void 	LinkedList<_T>::listShowData( P_SHOW_DATA<_T> pfun )
 }*/
 
 template <class _T>
+void 	LinkedList<_T>::listSwap(size_t index1, size_t index2)
+{
+	if( index1 < 0 ||
+		index2 < 0  )
+		return;
+
+	_T t = (*this)[index1];
+	listLocateNode(index1)->data = (*this)[index2];
+	listLocateNode(index2)->data = t;
+
+}
+
+
+template <class _T>
 _T 	LinkedList<_T>::operator[](int index)
 {
 	if( index > length )
 	{
-		std::cerr << "Index Out Of Bound" << std::endl;
+		//std::cerr << "Index Out Of Bound" << std::endl;
 		return( (_T)0 );
 	}
 
