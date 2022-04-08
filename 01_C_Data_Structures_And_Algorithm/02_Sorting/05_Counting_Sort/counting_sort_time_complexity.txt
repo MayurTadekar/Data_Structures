@@ -1,0 +1,34 @@
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\05_Counting_Sort>counting_sort.exe 10000
+Elements: 10000
+Time to assign value in 0s 0ms
+Sorting Finished in 0s 0ms
+
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\05_Counting_Sort>counting_sort.exe 100000
+Elements: 100000
+Time to assign value in 0s 2ms
+Sorting Finished in 0s 2ms
+
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\05_Counting_Sort>counting_sort.exe 1000000
+Elements: 1000000
+Time to assign value in 0s 33ms
+Sorting Finished in 0s 30ms
+
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\05_Counting_Sort>counting_sort.exe 10000000
+Elements: 10000000
+Time to assign value in 0s 260ms
+Sorting Finished in 0s 202ms
+
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\05_Counting_Sort>counting_sort.exe 100000000
+Elements: 100000000
+Time to assign value in 2s 2423ms
+Sorting Finished in 2s 2082ms
+
+
+D:\DataStructures\Data_Structures\01_C_Data_Structures_And_Algorithm\02_Sorting\05_Counting_Sort>counting_sort.exe 1000000000
+Elements: 1000000000
+Time to assign value in 28s 28618ms
+Sorting Finished in 137s 137841ms
