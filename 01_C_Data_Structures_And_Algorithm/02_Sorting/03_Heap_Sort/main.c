@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 	printf("{END}\n");*/
 
 	ms = timediff(t1, t2);
-	printf("Sorting Finished in %ds %d ms\n", ms/1000, ms - ((ms/1000)*1000));
+	printf("Sorting Finished in %ds %dms\n", ms/1000, ms - ( (ms / 1000) * 1000 ));	
 	printf("\n\n");
 
 	free(arr);

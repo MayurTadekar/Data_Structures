@@ -88,6 +88,8 @@ int main(int argc, char** argv)
 	printf("\n");*/
 
 	t1 = clock();
+
+	printf("1\n");
 	counting_sort(	arr, 
 					sizeof(int),
 					size, 
@@ -95,6 +97,7 @@ int main(int argc, char** argv)
 					get_value,
 					get_value_ptr,
 					assign_value);
+	printf("2\n");
 	t2 = clock();
 
 	/*printf("\nAfter Sorting:\n");
@@ -105,7 +108,7 @@ int main(int argc, char** argv)
 	printf("\n");*/
 
 	ms = timediff(t1, t2);
-	printf("Sorting Finished in %ds %dms\n", ms/1000, ms);
+	printf("Sorting Finished in %ds %dms\n", ms/1000, ms - ( (ms / 1000) * 1000 ));	
 	printf("\n");
 
 	free(arr);

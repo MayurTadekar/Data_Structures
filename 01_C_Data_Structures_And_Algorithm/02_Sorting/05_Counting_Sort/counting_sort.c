@@ -18,30 +18,45 @@ void 	counting_sort(	void* arr,
 	size_t *count = (size_t*)malloc( sizeof(size_t) * (range+1) );
 	size_t index;
 
+	printf("2\n");
+
 	void *temp = malloc( eleSize * size );
 	for( size_t i = 0 ; i < eleSize * size; ++i )
 	{
 		((char*)temp)[i] = ((char*)arr)[i];
 	}
+	printf("3\n");
 
 	memset(count, 0, eleSize * (range+1));
 
+	printf("4\n");
 	for( int i = 0 ; i < size; ++i )
 	{
 		++count[ get_value(temp, i) ];
 	}
 
+	printf("5\n");
 	for( index = 1; index <= range; ++index )
 	{
 		count[index] += count[index - 1];
 	}
 
-	for( int i = 0 ; i < size; ++i )
+	printf("6\n");
+	for( size_t i = 0 ; i < size; ++i )
 	{
-		assign_value( get_value_ptr( arr, count[ get_value(temp, i) ] - 1 ), get_value_ptr(temp, i) );
+		printf("8\n");
+
+		void* pl = get_value_ptr( arr, count[ get_value(temp, i) ] - 1 );
+		printf("9\n");
+		void* pr = get_value_ptr(temp, i);
+
+		printf("10\n");
+		assign_value( pl, pr );
+		
 		count[ get_value(temp, i) ]--;
 	}
 
+	printf("7\n");
 	free(count);
 	free(temp);
 }
