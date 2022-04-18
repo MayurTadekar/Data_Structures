@@ -33,6 +33,7 @@ typedef     struct Dummy*   p_dummy_t;
 typedef     struct Dummy**  pp_dummy_t;
 
 typedef     p_dummy_t     rbtree_t;
+typedef     pp_dummy_t    p_rbtree_t;
 
 typedef     void*   data_t;
 typedef     int     status_t;
@@ -58,6 +59,8 @@ typedef     bool_t(*COMPARE_PROC)(data_t tree_data, data_t n_data);
 
 typedef     void(*SHOWDATA_PROC)(data_t data);
 
+typedef     void(*DELETE_DATA_PROC)(data_t data);
+
 //  Tree Interface Functions
 
 extern  rbtree_t    create_tree();
@@ -67,6 +70,10 @@ extern  data_t      tree_remove(rbtree_t tree, data_t rdata, COMPARE_PROC p_comp
 extern  void        tree_inorder_traversal(rbtree_t tree, SHOWDATA_PROC p_showdata_proc);
 extern  void        tree_preorder_traversal(rbtree_t tree, SHOWDATA_PROC p_showdata_proc);
 extern  void        tree_postorder_traversal(rbtree_t tree, SHOWDATA_PROC p_showdata_proc);
+
+extern  size_t      tree_height(rbtree_t tree);
+
+extern  void        tree_destroy(p_rbtree_t ptree, DELETE_DATA_PROC p_deletedata_proc);
 
 //  Tree Auxillary Functions
 
@@ -81,8 +88,13 @@ static  void        preorder_run(p_node_t pnode, SHOWDATA_PROC p_showdata_proc);
 static  void        postorder_run(p_node_t pnode, SHOWDATA_PROC p_showdata_proc);
 
 static  void        insert_fixup(rbtree_t tree, p_node_t pnode);
+static  void        delete_fixup(rbtree_t tree, p_node_t pnode);
+
+static  void        transplant(rbtree_t tree, p_node_t u, p_node_t v);
 
 static  int         node_height(p_node_t pnode);
+
+static  void        post_order_data_delete(p_node_t pnode, DELETE_DATA_PROC p_deletedata_proc);
 
 static  p_node_t    create_node(data_t data);
 

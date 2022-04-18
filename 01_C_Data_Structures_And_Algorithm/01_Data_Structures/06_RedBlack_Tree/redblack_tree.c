@@ -5,6 +5,8 @@
 
 #include    "redblack_tree.h"
 
+#define     MAX(a,b)    (a>b ? a : b)
+
 //  Tree Auxillary Functions
 
 static  p_node_t    tree_successor(p_node_t pnode)
@@ -14,7 +16,7 @@ static  p_node_t    tree_successor(p_node_t pnode)
     if( NULL == prun )
         return(NULL);
 
-    while( NULL == prun->pleft )
+    while( NULL != prun->pleft )
         prun = prun->pleft;
     
     return(prun);
@@ -27,7 +29,7 @@ static  p_node_t    tree_predecessor(p_node_t pnode)
     if( NULL == prun )
         return(NULL);
 
-    while( NULL == prun->pright )
+    while( NULL != prun->pright )
         prun = prun->pright;
     
     return(prun);
@@ -135,7 +137,7 @@ static  void        insert_fixup(rbtree_t tree, p_node_t pnode)
         else
         {
             p_node_t uncle = gp->pleft;
-            printf("1\n");
+            //printf("1\n");
 
             /*
                 Case 1: Color of Uncle if RED
@@ -175,6 +177,98 @@ static  void        insert_fixup(rbtree_t tree, p_node_t pnode)
     }   
 }
 
+static  void        delete_fixup(rbtree_t tree, p_node_t node)
+{
+    p_node_t pnode = node;
+
+    while(  NULL != pnode    &&
+            tree->proot != pnode &&
+            pnode->color == BLACK )
+    {
+        if( pnode == pnode->parent->pleft)
+        {
+            p_node_t uncle = pnode->parent->pright;
+            if( NULL != uncle &&
+               uncle->color == RED  )
+            {
+                uncle->color = BLACK;
+                pnode->parent->color = RED;
+                left_rotate(tree, pnode->parent);
+                uncle = pnode->parent->pright;
+            }
+
+            if( (uncle->pleft == NULL || BLACK == uncle->pleft->color)  &&
+                (uncle->pright == NULL || BLACK == uncle->pright->color))
+            {
+                uncle->color = RED;
+                pnode = uncle->parent;
+            }
+            else 
+            {
+                if( NULL == uncle->pright   ||
+                    BLACK == uncle->pright->color)
+                {
+                    uncle->pleft->color = BLACK;
+                    uncle->color = RED;
+                    right_rotate(tree, uncle);
+
+                }
+                uncle->color = pnode->parent->color;
+                pnode->parent->color = BLACK;
+                uncle->pright->color = BLACK;
+                left_rotate(tree, pnode->parent);
+            }
+        }
+        else
+        {
+            p_node_t uncle = pnode->parent->pleft;
+            if( NULL != uncle &&
+                RED == uncle->color )
+            {
+                uncle->color = BLACK;
+                pnode->parent->color = RED;
+                right_rotate(tree, pnode->parent);
+                uncle = pnode->parent->pleft;
+            }
+            if( (NULL == uncle->pleft || BLACK == uncle->pleft->color)  && 
+                (NULL == uncle->pright || BLACK == uncle->pright->color))
+            {
+                uncle->color = RED;
+                pnode = pnode->parent;
+            }
+            else 
+            {
+                if( NULL == uncle->pleft ||
+                    BLACK == uncle->pleft->color )
+                {
+                    uncle->pright->color = BLACK;
+                    uncle->color = RED;
+                    left_rotate(tree, uncle->parent);
+                    uncle = pnode->parent->pleft;
+                }
+                uncle->color = uncle->parent->color;
+                pnode->parent->color = BLACK;
+                uncle->pleft->color = BLACK;
+                right_rotate(tree, pnode->parent);
+            }
+        }
+        pnode = tree->proot;
+    }
+}
+
+static  void        transplant(rbtree_t tree, p_node_t u, p_node_t v)
+{
+    if( NULL == u->parent )
+        tree->proot = v;
+    else if( u == u->parent->pleft )
+        u->parent->pleft = v;
+    else 
+        u->parent->pright = v;
+
+    if( v )
+        v->parent = u->parent;
+}
+
 static  void        inorder_run(p_node_t pnode, SHOWDATA_PROC p_showdata_proc)
 {
     if( NULL == pnode )
@@ -206,7 +300,28 @@ static  void        postorder_run(p_node_t pnode, SHOWDATA_PROC p_showdata_proc)
     p_showdata_proc(pnode->data);
 }
 
-static  int         node_height(p_node_t pnode);
+static  int         node_height(p_node_t pnode)
+{
+    if( NULL == pnode )
+        return(0);
+    
+    return  ( MAX(    node_height(pnode->pleft),
+                    node_height(pnode->pright) 
+                ) + 1 
+            );
+}
+
+static  void        post_order_data_delete(p_node_t pnode, DELETE_DATA_PROC p_deletedata_proc)
+{
+    if( NULL == pnode )
+        return;
+
+    post_order_data_delete(pnode->pleft, p_deletedata_proc);
+    post_order_data_delete(pnode->pright, p_deletedata_proc);
+    p_deletedata_proc(pnode->data);
+    free(pnode);
+}
+
 
 static  p_node_t    create_node(data_t data)
 {
@@ -315,17 +430,93 @@ extern  data_t      tree_remove(rbtree_t tree, data_t rdata, COMPARE_PROC p_comp
     if( NULL == prun )
         return((data_t)0);
 
-    successor = tree_successor(prun);
+    //if( successor )
+    //    printf("Succ = %d\n", (int)(long long)successor->data);
 
     ret_data = prun->data;
 
-    if( successor )
+    p_node_t x;
+    if( NULL == prun->pleft )
     {
-        prun->data = successor->data;
+        x = prun->pright;
+        transplant(tree, prun, x);
+    }
+    else if( NULL == prun->pright )
+    {
+        x = prun->pleft;
+        transplant(tree, prun, x);
+    }
+    else
+    {
+        successor = tree_successor(prun);
+        x = successor->pright;
+
+        if( successor->parent == prun )
+            x->parent = prun;
+        else
+        {
+            transplant(tree, successor, x);
+            successor->pright =   prun->pright;
+            successor->pright->parent = successor;
+        }
+        transplant(tree, prun, successor);
+        successor->pleft = prun->pleft;
+        successor->pleft->parent = successor;
+        successor->color = prun->color;
     }
 
-    
+    /*while(1)
+    {
+        if( successor )
+        {
+            prun->data = successor->data;
+            printf("Succ = %d\n", (int)(long long)successor->data);
 
+            prun = successor;
+            successor = tree_successor(prun);
+            continue;
+            
+
+            if( successor == prun->pright )
+            {
+                prun->pright = successor->pright;
+                if( prun->pright )
+                    prun->pright->parent = prun;
+            }
+            else
+            {
+                successor->parent->pleft = successor->pright;
+                if( successor->pright )
+                    successor->pright->parent = successor->parent;
+            }   
+        }
+        else
+        {
+            if( prun->parent )
+            {
+                if( prun->parent->pleft == prun )
+                    prun->parent->pleft = prun->pright;
+                else 
+                    prun->parent->pright = prun->pright;
+            }
+            
+            if( prun->pright )
+                prun->pright->parent = prun->parent;
+            
+            break;
+        }
+    }*/
+    
+    //printf("freeing: %d\n", (int)(long long)prun->data);
+    
+    if( BLACK == prun->color )
+        delete_fixup(tree, prun->parent);
+
+    free(prun);
+    tree->nr_elements--;
+
+    //printf("1\n");
+    return(ret_data);
 }
 
 extern  void        tree_inorder_traversal(rbtree_t tree, SHOWDATA_PROC p_showdata_proc)
@@ -354,3 +545,28 @@ extern  void        tree_postorder_traversal(rbtree_t tree, SHOWDATA_PROC p_show
     
     postorder_run(tree->proot, p_showdata_proc);
 }
+
+extern  size_t      tree_height(rbtree_t tree)
+{
+    return( node_height(tree->proot) );
+}
+
+extern  void        tree_destroy(p_rbtree_t ptree, DELETE_DATA_PROC p_deletedata_proc)
+{
+    
+    if( NULL == ptree ||
+        NULL == *ptree ||
+        0 == (*ptree)->nr_elements
+    )
+    {
+        printf("No Data to delete\n");
+        return;
+    }
+    
+    rbtree_t tree = *ptree;
+    post_order_data_delete(tree->proot, p_deletedata_proc);
+
+    free(tree);
+    *ptree = NULL;
+}
+
