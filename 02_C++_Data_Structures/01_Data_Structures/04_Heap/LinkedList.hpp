@@ -47,7 +47,6 @@ private:
 		Node(_T data) : data(data), pnext(this), pprev(this){};
 		~Node() {}
 
-		template <class _T> 
 		friend  class LinkedList;
 	};
 
@@ -447,7 +446,7 @@ LinkedList<_T>* LinkedList<_T>::operator+(LinkedList* l)
 template <class _T>
 void LinkedList<_T>::operator=(LinkedList* l)
 {
-	return(l);
+	list = *l;
 }
 
 template<class _T>

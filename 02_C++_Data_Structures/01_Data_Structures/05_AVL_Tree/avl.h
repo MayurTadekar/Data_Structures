@@ -219,7 +219,7 @@ void AVL<T>::InsertData(T data)
     {
         while(true)
         {
-            if( prun->data > data )
+            if( *prun->data > *data )
             {
                 if( NULL == prun->pleft)
                 {

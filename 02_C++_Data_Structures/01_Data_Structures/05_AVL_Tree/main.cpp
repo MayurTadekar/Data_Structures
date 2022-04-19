@@ -37,17 +37,17 @@ public:
     }
 
 };
-AVL<Int> *avl;
+AVL<Int*> *avl;
 
 int main(void)
 {
-    avl = new AVL<Int>();
+    avl = new AVL<Int*>();
 
     srand(time(0));
 
     for(int i = 0 ; i < 50; ++i)
     {
-        avl->InsertData(Int( rand() % 1000 + 1));
+        avl->InsertData(new Int( rand() % 1000 + 1));
         avl->PreOrderTraversal();
         std::cout << std::endl;
     }   
@@ -56,10 +56,10 @@ int main(void)
     //avl->PreOrderTraversal();
     //std::cout << std::endl;
 
-    Int a = avl->GetMax();
+    Int a = *avl->GetMax();
     std::cout << "Max : " << a << std::endl;
     
-    a = avl->GetMin();
+    a = *avl->GetMin();
     std::cout << "Min : " << a << std::endl;
 
     std::cout << avl->Height();

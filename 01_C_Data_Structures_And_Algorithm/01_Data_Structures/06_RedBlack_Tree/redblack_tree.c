@@ -201,7 +201,7 @@ static  void        delete_fixup(rbtree_t tree, p_node_t node)
                 (uncle->pright == NULL || BLACK == uncle->pright->color))
             {
                 uncle->color = RED;
-                pnode = uncle->parent;
+                pnode = pnode->parent;
             }
             else 
             {
@@ -211,7 +211,7 @@ static  void        delete_fixup(rbtree_t tree, p_node_t node)
                     uncle->pleft->color = BLACK;
                     uncle->color = RED;
                     right_rotate(tree, uncle);
-
+                    uncle = pnode->parent->pright;
                 }
                 uncle->color = pnode->parent->color;
                 pnode->parent->color = BLACK;
