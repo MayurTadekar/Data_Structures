@@ -29,7 +29,7 @@ class RedBlackTree
 
                 Node() : data(), pleft(NULL), pright(NULL), parent(NULL), color(RED) {};
                 Node(T data) : data(data), pleft(NULL), pright(NULL), parent(NULL), color(RED) {} 
-                ~Node() { }
+                ~Node() { std::cout << "Deleting: " << data << std::endl; }
         
             friend class RedBlackTree;
         };
@@ -53,9 +53,25 @@ class RedBlackTree
 
         Node*   Successor(Node* pnode);
 
+        void    PostOrderDestroy(Node* pnode)
+        {
+            if(!pnode)
+                return;
+
+            PostOrderDestroy(pnode->pleft);
+            PostOrderDestroy(pnode->pright);
+            delete(pnode);
+        }
+
     public:
 
         RedBlackTree() : proot(NULL), nr_elements(0) {}
+        ~RedBlackTree() 
+        { 
+            PostOrderDestroy(proot); 
+            proot = NULL;
+            nr_elements = 0;
+        }
 
         status_t    InsertData(T ndata);
         T           RemoveData(T rdata);
@@ -464,13 +480,17 @@ T   RedBlackTree<T>::RemoveData(T rdata)
     delete(prun);
     nr_elements--;
     proot->color = BLACK;
-
+    //delete(ret_data);
     return(ret_data);
 }
 
 template<typename T>
 void        RedBlackTree<T>::InorderTraversal()
 {
+    if( !proot )
+        return;
+        
+    std::cout << "Inorder:" << std::endl; 
     InorderRun(proot);
 }
 
@@ -488,15 +508,54 @@ void        RedBlackTree<T>::PostOrderTraversal()
 
 template<typename T>
 T   RedBlackTree<T>::GetMax()
-{}
+{
+    if( 0 == nr_elements )
+        return((T)(0));
+    
+    Node* prun = proot;
+
+    while(NULL != prun->pleft)
+        prun = prun->pleft;
+    
+    return(prun->data);
+}
 
 template<typename T>
 T   RedBlackTree<T>::GetMin()
-{}
+{
+    if( 0 == nr_elements )
+        return((T)(0));
+    
+    Node* prun = proot;
+
+    while(NULL != prun->pright)
+        prun = prun->pright;
+    
+    return(prun->data);
+}
 
 template<typename T>
 T   RedBlackTree<T>::Search(T sdata)
-{}
+{
+    if( 0 == nr_elements )
+        return((T)0);
+    
+    Node* prun = proot;
+
+    while(true)
+    {
+        if( prun->data == sdata )
+            return(prun->data);
+        
+        if( prun->data > sdata )
+            prun = prun->pleft;
+        else 
+            prun = prun->pright;
+        
+        if( !prun )
+            return((T)0);
+    }
+}
 
 template<typename T>
 size_t  RedBlackTree<T>::Height()
