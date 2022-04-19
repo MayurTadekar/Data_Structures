@@ -230,6 +230,7 @@ void    RedBlackTree<T>::DeleteFixup(Node* pnode)
                 RightRotate(prun->parent);
             }
         }
+        prun = proot;
     }
     proot->color = BLACK;
 }
