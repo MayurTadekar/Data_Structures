@@ -1,4 +1,4 @@
-
+ 
 
 #pragma     once
 
@@ -221,7 +221,7 @@ void    RedBlackTree<T>::DeleteFixup(Node* pnode)
                 {
                     uncle->pright->color = BLACK;
                     uncle->color = RED;
-                    LeftRotate(uncle);
+                    LeftRotate(uncle->parent);
                     uncle = prun->parent->pleft;
                 }
                 uncle->color = prun->parent->color;
