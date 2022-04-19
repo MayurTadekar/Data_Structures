@@ -152,9 +152,9 @@ void    RedBlackTree<T>::InsertFixup(Node* pnode)
 }
 
 template<typename T>
-void    RedBlackTree<T>::DeleteFixup(Node* pnode)
+void    RedBlackTree<T>::DeleteFixup(Node* node)
 {
-    Node* prun = pnode;
+    Node* prun = node;
 
     while(  NULL != prun &&
             proot != prun &&
@@ -238,8 +238,9 @@ void    RedBlackTree<T>::DeleteFixup(Node* pnode)
 template<typename T>
 void    RedBlackTree<T>::Transplant(Node* u, Node* v)
 {
+
     if( NULL == u->parent )
-        proot = u;
+        proot = v;
     else if( u == u->parent->pleft )
         u->parent->pleft = v;
     else 
@@ -252,12 +253,8 @@ void    RedBlackTree<T>::Transplant(Node* u, Node* v)
 template<typename T>
 void    RedBlackTree<T>::InorderRun(Node* pnode)
 {
-    //std::cout << "1" << std::endl;
-    
     if(!pnode)
         return;
-
-    //std::cout << "2" << std::endl;
 
     InorderRun(pnode->pleft);
     std::cout << "-";
@@ -351,6 +348,7 @@ typename RedBlackTree<T>::Node*   RedBlackTree<T>::Successor(Node* pnode)
 {
     Node* prun = pnode->pright;
 
+    //std::cout << "succ : " << prun->data << std::endl;
     while( NULL != prun->pleft )
         prun = prun->pleft;
 
@@ -444,7 +442,8 @@ T   RedBlackTree<T>::RemoveData(T rdata)
 
         if( successor->parent == prun )
         {
-            x->parent = prun;
+            if(x)
+                x->parent = prun;
         }
         else
         {

@@ -45,7 +45,7 @@ int main(void)
 
     srand(time(0));
     size_t size = (rand() % 1000) + 1;
-    for( int i = 0; i < 10; ++i )
+    for( int i = 0; i < 3; ++i )
     {   
         //std::cout << "1 : "<< std::endl; 
         tree->InsertData(MyInt( (int)( (i + 1) * 10 )) );
@@ -72,13 +72,13 @@ int main(void)
     tree->InorderTraversal();
     std::cout << std::endl;
 
-    std::cout << "Preorder:" << std::endl;
+    /*std::cout << "Preorder:" << std::endl;
     tree->PreOrderTraversal();
     std::cout << std::endl;
 
     std::cout << "Postorder:" << std::endl;
     tree->PostOrderTraversal();
-    std::cout << std::endl;
+    std::cout << std::endl;*/
 
     return(0);
 }
