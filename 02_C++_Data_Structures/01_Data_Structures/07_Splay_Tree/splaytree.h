@@ -24,7 +24,6 @@ private:
     void    LeftRotate(Node *pnode)
     {
         Node *right = pnode->pright;
-        Node *left = pnode->pleft;
 
         right->parent = pnode->parent;
         if( NULL == pnode->parent )
