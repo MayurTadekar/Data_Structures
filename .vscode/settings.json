@@ -45,6 +45,10 @@
         "xutility": "cpp",
         "algorithm": "cpp",
         "redblack_tree.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "functional": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "xhash": "cpp"
     }
 }
