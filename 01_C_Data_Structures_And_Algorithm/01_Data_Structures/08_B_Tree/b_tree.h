@@ -66,6 +66,20 @@ static  status_t    insert_non_full(p_node_t pnode, data_t newdata, COMPARE_PROC
 
 static  void    tree_run(p_node_t pnode, SHOWDATA_PROC pshowdata, size_t parent_index, size_t tab_count);
 
+static  status_t tree_search_node(p_node_t pnode, data_t sdata, pp_node_t snode, int* index, COMPARE_PROC pcompare);
+
+static  int     find_index(p_node_t pnode, data_t rdata, COMPARE_PROC pcompare);
+
+static  data_t  remove_from_leaf(p_node_t pnode, int dindex);
+static  data_t  remove_from_nonleaf(tree_t tree, p_node_t pnode, int dindex, COMPARE_PROC pcompare);
+
+static  void    fill_child(tree_t tree, p_node_t pnode, int index);
+
+static  void    borrow_from_prev(p_node_t pnode, int index);
+static  void    borrow_from_next(p_node_t pnode, int index);
+static  void    merge_node(tree_t, p_node_t, int);
+
+static  data_t  tree_remove_data(tree_t tree, p_node_t pnode, data_t rdata, COMPARE_PROC pcompare);
 
 //  Tree Interface Functions
 
@@ -73,7 +87,7 @@ extern  tree_t  tree_create();
 
 extern  status_t    tree_insert(tree_t tree, data_t data, COMPARE_PROC pcompare);
 
-extern  data_t  tree_remove(tree_t tree, COMPARE_PROC pcompare);
+extern  data_t  tree_remove(tree_t tree, data_t rdata, COMPARE_PROC pcompare);
 
 extern  data_t  tree_search(tree_t tree, data_t sdata, COMPARE_PROC pcompare);
 

@@ -11,7 +11,8 @@
 tree_t tree;
 
 status_t compare(data_t d1, data_t d2)
-{
+{   
+    //printf("%zd - %zd\n", d1, d2);
     if( (size_t)d1 < (size_t)d2 )
         return(SUCCESS);
     
@@ -55,7 +56,7 @@ int main(int argc, char **argv)
 
     srand(time(0));
     
-    for( int i = 0 ; i < nr_elements; ++i )
+    /*for( int i = 0 ; i < nr_elements; ++i )
     {   
         long long data = (long long)( rand() % 1000 + 1 );
         if( FAILURE == tree_insert(tree, (data_t)data, compare) )
@@ -63,14 +64,42 @@ int main(int argc, char **argv)
         else
             printf("\n %ld New ndata\n", data);
         print_tree(tree);
-    }
+    }*/
 
-    /*for( int i = 0 ; i < nr_elements; ++i )
+    for( int i = 0 ; i < nr_elements; ++i )
     {
-        tree_insert(tree, (data_t) (long long)( (i+1) + 64 ), compare);
-        print_tree(tree);
+        tree_insert(tree, (data_t) (long long)( (i+1) * 10  ), compare);
+        //print_tree(tree);
     }
-    */
+    print_tree(tree);
+    
+    data_t sdata = tree_search(tree, (data_t)(long long)100, compare);
+
+    if( NULL != sdata )
+        printf("Data found = %zd\n", (size_t) sdata);
+    else
+        printf("Data not present\n");
+
+    printf("Deleted data = %zd\n", (size_t) tree_remove(tree, (data_t)100, compare ));
+    print_tree(tree);
+
+    printf("Deleted data = %zd\n", (size_t) tree_remove(tree, (data_t)30, compare ));
+    print_tree(tree);
+
+    printf("Deleted data = %zd\n", (size_t) tree_remove(tree, (data_t)90, compare ));
+    print_tree(tree);
+
+    printf("Deleted data = %zd\n", (size_t) tree_remove(tree, (data_t)60, compare ));
+    print_tree(tree);
+
+    printf("Deleted data = %zd\n", (size_t) tree_remove(tree, (data_t)50, compare ));
+    print_tree(tree);
+
+    printf("Deleted data = %zd\n", (size_t) tree_remove(tree, (data_t)40, compare ));
+    print_tree(tree);
+
+    printf("\n");    
+
     return(0);
 }
 
