@@ -448,7 +448,14 @@ static  data_t  tree_remove_data(tree_t tree, p_node_t pnode, data_t rdata, COMP
     else
     {
         //printf("else\n");
-        if( index > pnode->count )
+        if( (index > pnode->count) || 
+            (pnode->isleaf == TRUE &&
+                (   
+                    (SUCCESS == pcompare(pnode->data[index], rdata) ) ||
+                    (SUCCESS == pcompare(rdata, pnode->data[index]) )  
+                )
+            ) 
+        )
             return(NULL);
         
         //printf("1 \n");
