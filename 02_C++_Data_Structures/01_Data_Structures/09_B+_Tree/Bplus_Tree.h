@@ -11,30 +11,38 @@ class BTree
 {
     private:
 
-    class Node
+    bool    m_removeFromNonLeaf;
+        
+    struct Node
     {
         private:
             Node* children[2 * MAX + 1];
             T key[2 * MAX];
             bool    isLeaf;
             int     count;
+            BTree*  parent;
 
             Node() : isLeaf(true), count(0) {}
+            Node(BTree* parent) : isLeaf(true), count(0), parent(parent) {}
             ~Node() {}
 
             void    SplitChild(int index)
             {
-                Node *z = new Node();
+                Node *z = new Node(parent);
                 Node *y = children[index];
 
                 z->isLeaf = y->isLeaf;
-                z->count = MAX - 1;
+                //z->count = MAX-1;
 
                 int i = 0;
+                z->key[0] = y->key[MAX-1];
+                z->children[0] = y->children[MAX];
+                z->count++;
                 for( i = 0; i < MAX - 1; ++i )
                 {
-                    z->key[i] = y->key[ MAX + i ];
-                    z->children[i] = y->children[ MAX + i];
+                    z->key[z->count] = y->key[ MAX + i ];
+                    z->children[z->count] = y->children[ MAX + i];
+                    z->count++;
                 }
                 z->children[i] = y->children[ MAX + i];
 
@@ -45,13 +53,14 @@ class BTree
                     children[i+2] = children[i+1];
                 }
                 children[i+2] = children[i+1];
-                //std::cout << "3" << std::endl;
                 
                 children[index+1] = z;
                 key[index] = y->key[MAX-1];
 
                 count++;
                 y->count = MAX - 1;
+                
+                y->children[ y->count+1 ] = z;
             }
 
             void    InsertNonFull(T data)
@@ -96,7 +105,7 @@ class BTree
 
                     if( children[index]->count >= 2 * MAX - 1 )
                     {
-                        std::cout << "1" << std::endl;
+                        //std::cout << "1" << std::endl;
                         SplitChild(index);
                         if( data > key[index] )
                             index++;
@@ -148,6 +157,7 @@ class BTree
                     key[i] = key[i+1];
                 }
                 count--;
+                parent->m_removeFromNonLeaf = false;
                 return(retdata);
             }
 
@@ -164,11 +174,14 @@ class BTree
                     //std::cout<<"If" << std::endl;
                     key[index] = children[index]->key[ children[index]->count-1 ];
                     children[index]->RemoveData( key[index] );
+                    parent->m_removeFromNonLeaf = false;
                 }
                 else if( children[index+1]->count >= MAX)
                 {
-                    key[index] = children[index+1]->key[0];
+                    //std::cout<<"else if" << std::endl;
                     children[index+1]->RemoveData( key[index] );    
+                    key[index] = children[index+1]->key[0];
+                    parent->m_removeFromNonLeaf = false;
                 }
                 else 
                 {
@@ -191,6 +204,7 @@ class BTree
                         children[i+1] = children[i+2];
                     }                
                     count--;
+                    parent->m_removeFromNonLeaf = true;
                     delete(y);
                 }
                 return(ret_data);
@@ -198,6 +212,7 @@ class BTree
 
             void    BorrowFromPrev(int index)
             {
+                //sstd::cout << "From Prev" << std::endl;
                 Node* child = children[index];
                 Node* sib = children[index-1];
 
@@ -245,8 +260,10 @@ class BTree
                 Node* y = children[index];
                 Node* z = children[index+1];
 
+                //std::cout << "Merge" << std::endl;
+
                 y->key[ y->count ] = key[index];
-                y->count++;
+                //y->count++;
 
                 int i = 0;
                 for( i = 0; i < z->count; ++i )
@@ -265,12 +282,6 @@ class BTree
                 children[index+1] = children[index+2];
 
                 count--;
-
-                /*if( count == 0 && m_proot == this )
-                {
-                    delete(this);
-                    m_proot = y;
-                }*/
 
                 delete(z);
             }
@@ -302,7 +313,10 @@ class BTree
                     if( isLeaf )
                         return(RemoveFromLeaf(index));
                     else
+                    {
+                        //std::cout << "Nonleaf" << std::endl;
                         return(RemoveFromNonLeaf(index));
+                    }
                 }
                 else
                 {
@@ -330,32 +344,32 @@ class BTree
         };
 
     Node    *m_proot;
-    
+
     public:
-        BTree() { m_proot = new Node(); }
+        BTree() { m_proot = new Node(this); }
         ~BTree() { /* DESTROY TREE */ };
 
         void    Insert(T ndata)
         {
             Node *run = m_proot;
             
-            std::cout << "0" << std::endl;
+            //std::cout << "0" << std::endl;
             if( 2 * MAX - 1 == run->count )
             {
-                std::cout << "0" << std::endl;
-                Node * newnode = new Node();
+                //std::cout << "0" << std::endl;
+                Node * newnode = new Node(this);
                 newnode->children[0] = m_proot;
                 newnode->isLeaf = false;
                 newnode->count = 0;
                 m_proot = newnode;
-                std::cout << "1" << std::endl;
+                //std::cout << "1" << std::endl;
                 m_proot->SplitChild(0);
-                std::cout << "2" << std::endl;
+                //std::cout << "2" << std::endl;
                 m_proot->InsertNonFull(ndata);
             }
             else 
             {
-                std::cout << "else" << std::endl;
+                //std::cout << "else" << std::endl;
                 run->InsertNonFull(ndata);
                 //std::cout << "Count : " << m_proot->count << std::endl; 
             }
@@ -364,6 +378,9 @@ class BTree
         T       Remove(T rdata)
         {
             T retdata = m_proot->RemoveData(rdata);
+
+            if( m_removeFromNonLeaf )
+                m_proot->RemoveData(rdata);
 
             if( 0 == m_proot->count )
             {
