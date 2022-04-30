@@ -4,8 +4,6 @@
 
 #define     MAX     3
 
-#include    <vector>
-
 template<typename T>
 class BTree
 {
