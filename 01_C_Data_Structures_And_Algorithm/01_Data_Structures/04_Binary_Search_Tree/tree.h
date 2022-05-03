@@ -18,12 +18,12 @@ typedef		struct _node	node_t;
 typedef		struct _node*	p_node_t;
 typedef		struct _node**	pp_node_t;
 
-struct _dummy;
-typedef 	struct _dummy 	dummy_t;
-typedef 	struct _dummy* 	p_dummy_t;
-typedef 	struct _dummy**	pp_dummy_t;
+struct _dummy_tree;
+typedef 	struct _dummy_tree 	dummy_tree_t;
+typedef 	struct _dummy_tree* 	p_dummy_tree_t;
+typedef 	struct _dummy_tree**	pp_dummy_tree_t;
 
-typedef 	struct _dummy* 	tree_t;
+typedef 	struct _dummy_tree* 	tree_t;
 
 typedef 	int 	ret_t;
 typedef 	int 	status_t;
@@ -43,11 +43,11 @@ struct _node
 };
 #define		SIZE_NODE		(sizeof(node_t))
 
-struct _dummy
+struct _dummy_tree
 {
 	p_node_t 	root;
 };
-#define		SIZE_DUMMY		(sizeof(dummy_t))
+#define		SIZE_dummy_tree		(sizeof(dummy_tree_t))
 
 
 //	Tree Interface Functions
@@ -58,6 +58,10 @@ extern	data_t		tree_delete(tree_t ptree, data_t data, P_COMPARE_PROC compare_pro
 extern	void		tree_in_order_traversal(tree_t ptree, P_SHOW_DATA_PROC show_data_proc);
 extern	void		tree_pre_order_traversal(tree_t ptree, P_SHOW_DATA_PROC show_data_proc);
 extern	void		tree_post_order_traversal(tree_t ptree, P_SHOW_DATA_PROC show_data_proc);
+
+extern	void		tree_in_order_traversal_non_recursive(tree_t ptree, P_SHOW_DATA_PROC show_data_proc);
+extern	void		tree_pre_order_traversal_non_recursive(tree_t ptree, P_SHOW_DATA_PROC show_data_proc);
+extern	void		tree_post_order_traversal_non_recursive(tree_t ptree, P_SHOW_DATA_PROC show_data_proc);
 
 extern	data_t		tree_search(tree_t ptree, data_t s_data, P_COMPARE_PROC compare_proc);
 
@@ -88,6 +92,10 @@ static	p_node_t 	tree_predecessor(p_node_t pnode);
 static 	void		tree_inorder(p_node_t pnode, P_SHOW_DATA_PROC show_data_proc);
 static 	void		tree_preorder(p_node_t pnode, P_SHOW_DATA_PROC show_data_proc);
 static 	void		tree_postorder(p_node_t pnode, P_SHOW_DATA_PROC show_data_proc);
+
+static 	void		tree_inorder_non_recursive(p_node_t pnode, P_SHOW_DATA_PROC show_data_proc);
+static 	void		tree_preorder_non_recursive(p_node_t pnode, P_SHOW_DATA_PROC show_data_proc);
+static 	void		tree_postorder_non_recursive(p_node_t pnode, P_SHOW_DATA_PROC show_data_proc);
 
 static 	void		tree_postorder_destroy(tree_t ptree, p_node_t pnode, P_DELETE_DATA_PROC delete_data_proc);
 

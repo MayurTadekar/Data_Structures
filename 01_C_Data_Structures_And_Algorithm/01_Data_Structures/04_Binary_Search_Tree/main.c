@@ -58,32 +58,45 @@ int main(void)
 		fprintf(stdout, "\n-");
 		show_data(p);
 	}
+	
+	// pdatan_t p = (pdatan_t) malloc(SIZE_DATA);
+	// p->data = 50;
+	// tree_insert(tree, p, compare);
 
+	fprintf(stdout,"InOrder:");
 	tree_in_order_traversal(tree, show_data);
+	tree_in_order_traversal_non_recursive(tree, show_data);
+	fprintf(stdout,"\n");
+	
+	fprintf(stdout,"PreOrder:");
 	tree_pre_order_traversal(tree, show_data);
+	tree_pre_order_traversal_non_recursive(tree, show_data);
+	fprintf(stdout,"\n");
+
 	tree_post_order_traversal(tree, show_data);
+	tree_post_order_traversal_non_recursive(tree, show_data);
 
-	srand( time(0) );
-	for( int i = 0; i < 4; ++i )
-	{
-		datan_t p = {rand() % 100 + 1};
-		pdatan_t pd = tree_delete(tree, &p, compare);
+	// srand( time(0) );
+	// for( int i = 0; i < 4; ++i )
+	// {
+	// 	datan_t p = {rand() % 100 + 1};
+	// 	pdatan_t pd = tree_delete(tree, &p, compare);
 
-		if ( NULL != pd )
-		{
-			fprintf(stdout, "\n");
-			show_data(pd);
-		}
-	}
+	// 	if ( NULL != pd )
+	// 	{
+	// 		fprintf(stdout, "\n");
+	// 		show_data(pd);
+	// 	}
+	// }
 
-	tree_in_order_traversal(tree, show_data);
-	tree_pre_order_traversal(tree, show_data);
-	tree_post_order_traversal(tree, show_data);
+	// tree_in_order_traversal(tree, show_data);
+	// tree_pre_order_traversal(tree, show_data);
+	// tree_post_order_traversal(tree, show_data);
 	
 	tree_destroy(&tree, delete_data);
-	tree_in_order_traversal(tree, show_data);
-	tree_pre_order_traversal(tree, show_data);
-	tree_post_order_traversal(tree, show_data);	
+	// tree_in_order_traversal(tree, show_data);
+	// tree_pre_order_traversal(tree, show_data);
+	// tree_post_order_traversal(tree, show_data);	
 
 	return(SUCCESS);
 }

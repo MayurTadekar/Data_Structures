@@ -3,6 +3,7 @@
 #include    <stdio.h>
 #include    <stdlib.h>
 
+#include    "stack.h"
 #include    "SplayTree.h"
 
 //  Tree auxillary functions
@@ -17,16 +18,16 @@ static  void*   Xcalloc(size_t nr_elements, size_t size_element)
     return(p);
 }
 
-static  p_node_t    create_node(data_t data)
+static  p_node_tree_t    create_node(data_t data)
 {
-    p_node_t pnode = (p_node_t) Xcalloc(1, SIZE_NODE);
+    p_node_tree_t pnode = (p_node_tree_t) Xcalloc(1, SIZE_NODE);
     pnode->data = data;
     pnode->pleft = NULL;
     pnode->pright = NULL;
     pnode->parent = NULL;
 }
 
-static  void    transplant(tree_t tree, p_node_t u, p_node_t v)
+static  void    transplant(tree_t tree, p_node_tree_t u, p_node_tree_t v)
 {
     if( NULL == u->parent )
         tree->proot = v;
@@ -39,7 +40,7 @@ static  void    transplant(tree_t tree, p_node_t u, p_node_t v)
         v->parent = u->parent;
 }
 
-static  void    inorder_run(p_node_t pnode, SHOWDATA_PROC pshowdata)
+static  void    inorder_run(p_node_tree_t pnode, SHOWDATA_PROC pshowdata)
 {
     if( !pnode )
         return;
@@ -49,7 +50,7 @@ static  void    inorder_run(p_node_t pnode, SHOWDATA_PROC pshowdata)
     inorder_run(pnode->pright, pshowdata);
 }
 
-static  void    preorder_run(p_node_t pnode, SHOWDATA_PROC pshowdata)
+static  void    preorder_run(p_node_tree_t pnode, SHOWDATA_PROC pshowdata)
 {
     if(!pnode)
         return;
@@ -59,7 +60,7 @@ static  void    preorder_run(p_node_t pnode, SHOWDATA_PROC pshowdata)
     preorder_run(pnode->pright, pshowdata);
 }
 
-static  void    postorder_run(p_node_t pnode, SHOWDATA_PROC pshowdata)
+static  void    postorder_run(p_node_tree_t pnode, SHOWDATA_PROC pshowdata)
 {
     if(!pnode)
         return;
@@ -69,13 +70,110 @@ static  void    postorder_run(p_node_t pnode, SHOWDATA_PROC pshowdata)
     pshowdata(pnode);
 }
 
-static  p_node_t    find_node(tree_t tree, data_t data, COMPARE_PROC pcompare)
+static 	void		tree_inorder_non_recursive(p_node_tree_t pnode_tree_tree, SHOWDATA_PROC show_data_proc)
+{
+	stack_t stack = create_stack();
+	
+	if( NULL == pnode_tree_tree )
+		return;
+
+	p_node_tree_t run = pnode_tree_tree;
+	
+	stack_push(stack, run);
+	
+	while( 0 != stack_size(stack) )
+	{
+		while( NULL != run )
+		{
+			run = run->pleft;
+			if( NULL == run )
+				break;
+			stack_push(stack, run);
+		}
+
+		run = stack_pop(stack);
+		show_data_proc(run->data);
+		fprintf(stdout,"-");
+
+		run = run->pright;
+		if( NULL != run )
+			stack_push(stack, run);
+	}  
+}
+
+static 	void		tree_preorder_non_recursive(p_node_tree_t pnode_tree_tree, SHOWDATA_PROC show_data_proc)
+{
+	stack_t stack = create_stack();
+
+	p_node_tree_t run = pnode_tree_tree;
+
+	stack_push(stack, run);
+
+	while( 0 != stack_size(stack) )
+	{
+		while( NULL != run )
+		{
+			show_data_proc(run->data);
+			fprintf(stdout,"-");
+			run = run->pleft;
+			if( NULL == run )
+				break;
+			stack_push(stack, run);
+		}
+
+		run = stack_pop(stack);
+		run = run->pright;
+		if( NULL != run )
+			stack_push(stack, run);
+	}
+}
+
+static 	void		tree_postorder_non_recursive(p_node_tree_t pnode_tree_tree, SHOWDATA_PROC show_data_proc)
+{
+	stack_t stack = create_stack();
+
+	p_node_tree_t run = pnode_tree_tree;
+	bool_t flag = TRUE;
+
+	// /stack_push(stack, run);
+
+	while( 0 != stack_size(stack) || flag == TRUE)
+	{
+		flag = FALSE;
+		while( NULL != run )
+		{
+			if( run->pright )
+				stack_push(stack, run->pright);
+			stack_push(stack, run);
+
+			run = run->pleft;
+		}
+
+		run = stack_pop(stack);
+
+		if( run && run->pright == stack_peek(stack) )
+		{
+			stack_pop(stack);
+			stack_push(stack, run);
+			
+			run = run->pright;
+		}
+		else
+		{
+			show_data_proc(run->data);
+			fprintf(stdout,"-");
+			run = NULL;
+		}
+	}
+}
+
+static  p_node_tree_t    find_node(tree_t tree, data_t data, COMPARE_PROC pcompare)
 {
     if( NULL == tree ||
         NULL == tree->proot )
         return(NULL);
 
-    p_node_t prun = tree->proot;
+    p_node_tree_t prun = tree->proot;
 
     while(prun)
     {
@@ -88,9 +186,9 @@ static  p_node_t    find_node(tree_t tree, data_t data, COMPARE_PROC pcompare)
     }
 }
 
-static  void    left_rotate(tree_t tree, p_node_t pnode)
+static  void    left_rotate(tree_t tree, p_node_tree_t pnode)
 {
-    p_node_t right = pnode->pright;
+    p_node_tree_t right = pnode->pright;
     
     transplant(tree, pnode, right);
 
@@ -102,9 +200,9 @@ static  void    left_rotate(tree_t tree, p_node_t pnode)
     pnode->parent = right;
 }
 
-static  void    right_rotate(tree_t tree, p_node_t pnode)
+static  void    right_rotate(tree_t tree, p_node_tree_t pnode)
 {
-    p_node_t left = pnode->pleft;
+    p_node_tree_t left = pnode->pleft;
 
     transplant(tree, pnode, left);
 
@@ -116,9 +214,9 @@ static  void    right_rotate(tree_t tree, p_node_t pnode)
     pnode->parent = left;
 }
 
-static  p_node_t    successor(p_node_t pnode)
+static  p_node_tree_t    successor(p_node_tree_t pnode)
 {
-    p_node_t prun = pnode->pright;
+    p_node_tree_t prun = pnode->pright;
 
     while( NULL != prun->pleft )
         prun = prun->pleft;
@@ -126,7 +224,7 @@ static  p_node_t    successor(p_node_t pnode)
     return(prun);
 }
 
-static  void    splay(tree_t tree, p_node_t pnode)
+static  void    splay(tree_t tree, p_node_tree_t pnode)
 {
     while( pnode->parent )
     {
@@ -163,7 +261,7 @@ static  void    splay(tree_t tree, p_node_t pnode)
     }
 }
 
-static  void    postorder_destroy(p_node_t pnode, DELETEDATA_PROC pdeletedata)
+static  void    postorder_destroy(p_node_tree_t pnode, DELETEDATA_PROC pdeletedata)
 {
     if( !pnode )
         return;
@@ -185,14 +283,14 @@ extern  tree_t  tree_create()
 
 extern  void    tree_insert(tree_t tree, data_t data, COMPARE_PROC pcompare)
 {
-    p_node_t newnode = create_node(data);
+    p_node_tree_t newnode = create_node(data);
     if( NULL == tree->proot )
     {
         tree->proot = newnode;
     }
     else
     {
-        p_node_t prun = tree->proot;
+        p_node_tree_t prun = tree->proot;
         while(1)
         {
             if( pcompare(prun->data, data) == SUCCESS )
@@ -226,7 +324,7 @@ extern  data_t  tree_remove(tree_t tree, data_t rdata, COMPARE_PROC pcompare)
         NULL == tree->proot )
         return(NULL);
 
-    p_node_t dnode = find_node(tree, rdata, pcompare);
+    p_node_tree_t dnode = find_node(tree, rdata, pcompare);
 
     splay(tree, dnode);
 
@@ -242,7 +340,7 @@ extern  data_t  tree_remove(tree_t tree, data_t rdata, COMPARE_PROC pcompare)
     }
     else
     {
-        p_node_t succ = successor(dnode);
+        p_node_tree_t succ = successor(dnode);
 
         if( succ != dnode->pright )
         {
@@ -277,6 +375,41 @@ extern  void    tree_postorder_traversal(tree_t tree, SHOWDATA_PROC pshowdata)
 {
     fprintf(stdout, "\nPostorder:\n");
     postorder_run(tree->proot, pshowdata);
+}
+
+
+
+extern	void		tree_in_order_traversal_non_recursive(tree_t ptree, SHOWDATA_PROC show_data_proc)
+{
+	//	Code
+	fprintf(stdout,"\n{START}-");
+	if( SUCCESS == tree_check_root(ptree) )
+	{
+		tree_inorder_non_recursive(ptree->proot, show_data_proc);
+	}
+	fprintf(stdout,"{END}");
+}
+
+extern	void		tree_pre_order_traversal_non_recursive(tree_t ptree, SHOWDATA_PROC show_data_proc)
+{
+	//	Code
+	fprintf(stdout,"\n{START}-");
+	if( SUCCESS == tree_check_root(ptree) )
+	{
+		tree_preorder_non_recursive(ptree->proot, show_data_proc);
+	}
+	fprintf(stdout,"{END}");
+}
+
+extern	void		tree_post_order_traversal_non_recursive(tree_t ptree, SHOWDATA_PROC show_data_proc)
+{
+	//	Code
+	fprintf(stdout,"\n{START}-");
+	if( SUCCESS == tree_check_root(ptree) )
+	{
+		tree_postorder_non_recursive(ptree->proot, show_data_proc);
+	}
+	fprintf(stdout,"{END}");
 }
 
 extern  void    tree_destroy(tree_t* ptree, DELETEDATA_PROC pdeletedata)
