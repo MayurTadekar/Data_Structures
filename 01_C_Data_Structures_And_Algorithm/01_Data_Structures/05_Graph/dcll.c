@@ -697,3 +697,25 @@ extern  data_t  list_get_data(list_t list, data_t edata, ret_t (*p_compare_proc)
 {   
     return( (list_locate_node(list, edata, p_compare_proc))->data );
 }
+
+extern 	data_t 	list_at(list_t list, int index)
+{
+    ret_t status = list_is_empty(list);
+    if( E_LIST_NOT_PRESENT == status    ||
+        E_LIST_EMPTY == status )
+    {
+        return(status);
+    }
+
+    if( ((p_dummy_t)list)->noOfNodes <= index )
+        return(NULL);
+
+    p_node_t run = ((p_dummy_t)list)->list->pnext;
+
+    for( int i = 0; i < index; ++i )
+    {
+        run = run->pnext;
+    }
+    
+    return(run->data);
+}

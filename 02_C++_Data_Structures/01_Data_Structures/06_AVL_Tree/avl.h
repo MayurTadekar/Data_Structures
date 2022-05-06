@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include    "Stack.h"
+
 #define     MAX(a, b)   ( a > b ? a : b )
 
 template<typename T>
@@ -17,6 +19,10 @@ public:
     void InOrderTraversal();
     void PreOrderTraversal();
     void PostOrderTraversal();
+    
+	void	InOrderIterativeTraversal(P_SHOW_FUNC<_T>);
+	void	PreOrderIterativeTraversal(P_SHOW_FUNC<_T>);
+	void	PostOrderIterativeTraversal(P_SHOW_FUNC<_T>);
 
     size_t Height();
     
@@ -44,6 +50,10 @@ private:
     void    InOrderRun(Node* pnode);
     void    PreOrderRun(Node* pnode);
     void    PostOrderRun(Node* pnode);
+
+    void    InOrderIterativeRun(Node*);
+	void    PreOrderIterativeRun(Node*);
+	void    PostOrderIterativeRun(Node*);
 
     size_t  NodeHeight(Node* pnode);
 
@@ -399,7 +409,121 @@ void AVL<T>::PostOrderTraversal()
 {
     PostOrderRun(m_root);
 }
-   
+
+template <typename _T>
+inline	void AVL<_T>::InOrderIterativeTraversal(P_SHOW_FUNC<_T> showdata_proc)
+{	
+	if(NULL != m_Root)
+		InOrderIterativeRun(m_Root, showdata_proc);
+}
+
+template <typename _T>
+inline	void AVL<_T>::PreOrderIterativeTraversal(P_SHOW_FUNC<_T> showdata_proc)
+{
+	if(NULL != m_Root)
+		PreOrderIterativeRun(m_Root, showdata_proc);
+}
+
+template <typename _T>
+inline	void AVL<_T>::PostOrderIterativeTraversal(P_SHOW_FUNC<_T> showdata_proc)
+{
+	if(NULL != m_Root)
+		PostOrderIterativeRun(m_Root, showdata_proc);
+}
+
+template <typename _T>
+void AVL<_T>::InOrderIterativeRun(Node* pnode, P_SHOW_FUNC<_T> showdata_proc)
+{
+	Stack<Node*> *stack = new Stack<Node*>();
+
+	Node* run = pnode;
+
+	stack->Push(run);
+
+	while( 0 != stack->Size())
+	{
+		while( run != NULL )
+		{
+			//std::cout << "-" << run->data << "-" << run->pleft->data << std::endl;
+			run = run->pleft;
+			if(!run)
+				break;
+			stack->Push(run);
+		}
+
+		run = stack->Pop();
+
+		showdata_proc(run->data);
+
+		run = run->pright;
+		if( run )
+			stack->Push(run);
+	}
+}
+
+template <typename _T>
+void AVL<_T>::PreOrderIterativeRun(Node* pnode, P_SHOW_FUNC<_T> showdata_proc)
+{
+	Stack<Node*> *stack = new Stack<Node*>();
+
+	stack->Push(pnode);
+
+	while( 0 != stack->Size() )
+	{
+		while( pnode != NULL )
+		{
+			showdata_proc(pnode->data);
+			pnode = pnode->pleft;
+			if( !pnode )
+				break;
+			stack->Push(pnode);
+		}
+
+		pnode = stack->Pop();
+
+		if( pnode->pright )
+			stack->Push(pnode->pright);
+		pnode = pnode->pright;
+	}
+}
+
+template <typename _T>
+void AVL<_T>::PostOrderIterativeRun(Node* pnode, P_SHOW_FUNC<_T> showdata_proc)
+{
+	Stack<Node*> *stack = new Stack<Node*>();
+
+	bool flag = true;
+
+	while( 0 != stack->Size() || flag)
+	{
+		flag = false;
+		while( pnode )
+		{
+			if( pnode->pright )
+				stack->Push(pnode->pright);
+			
+			stack->Push(pnode);
+
+			pnode = pnode->pleft;
+		}
+		
+		pnode = stack->Pop();
+
+		if( pnode && pnode->pright == stack->Peek() )
+		{
+			stack->Pop();
+			stack->Push(pnode);
+			
+			pnode = pnode->pright;
+		}
+		else 
+		{
+			showdata_proc(pnode->data);
+			pnode = NULL;
+		}
+	}
+}
+
 template<typename T>
 size_t AVL<T>::Height()
 {

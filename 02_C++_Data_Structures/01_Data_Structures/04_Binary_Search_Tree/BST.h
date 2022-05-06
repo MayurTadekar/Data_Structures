@@ -4,6 +4,8 @@
 
 #include	<iterator>
 
+#include 	"Stack.h"
+
 //	TYPES & TYPEDEFS
 
 #define 	SUCCESS 	0
@@ -39,7 +41,6 @@ private:
 		Node(_T data) : data(data), pleft(NULL), pright(NULL), parent(NULL) {}
 		~Node() { }
 		
-		template <typename _T>
 		friend class BinarySearchTree;
 	};
 
@@ -48,6 +49,10 @@ private:
 	void InOrder(Node*, P_SHOW_FUNC<_T>);
 	void PreOrder(Node*, P_SHOW_FUNC<_T>);
 	void PostOrder(Node*, P_SHOW_FUNC<_T>);
+
+	void InOrder_Iterative(Node*, P_SHOW_FUNC<_T>);
+	void PreOrder_Iterative(Node*, P_SHOW_FUNC<_T>);
+	void PostOrder_Iterative(Node*, P_SHOW_FUNC<_T>);
 
 	Node* 	Successor(Node* pnode);
 	Node* 	Predecessor(Node* pnode);
@@ -75,6 +80,10 @@ public:
 	inline	void	TreePreOrder(P_SHOW_FUNC<_T>);
 	inline	void	TreePostOrder(P_SHOW_FUNC<_T>);
 
+	inline	void	TreeInOrder_Iterative(P_SHOW_FUNC<_T>);
+	inline	void	TreePreOrder_Iterative(P_SHOW_FUNC<_T>);
+	inline	void	TreePostOrder_Iterative(P_SHOW_FUNC<_T>);
+
 };
 
 /***************** BinarySearchTree Private Functions *****************/
@@ -83,12 +92,12 @@ template <typename _T>
 void BinarySearchTree<_T>::InOrder(Node* pnode, P_SHOW_FUNC<_T> showdata_proc)
 {
 
-	if( NULL != pnode->pleft )
+	if( pnode->pleft )
 		InOrder(pnode->pleft, showdata_proc);
 
 	showdata_proc(pnode->data);
 
-	if( NULL != pnode->pright)
+	if( pnode->pright)
 		InOrder(pnode->pright, showdata_proc);
 }
 
@@ -98,10 +107,10 @@ void BinarySearchTree<_T>::PreOrder(Node* pnode, P_SHOW_FUNC<_T> showdata_proc)
 	showdata_proc(pnode->data);
 
 	if( NULL != pnode->pleft )
-		InOrder(pnode->pleft, showdata_proc);
+		PreOrder(pnode->pleft, showdata_proc);
 
 	if( NULL != pnode->pright)
-		InOrder(pnode->pright, showdata_proc);
+		PreOrder(pnode->pright, showdata_proc);
 }
 
 template <typename _T>
@@ -109,12 +118,105 @@ void BinarySearchTree<_T>::PostOrder(Node* pnode, P_SHOW_FUNC<_T> showdata_proc)
 {
 
 	if( NULL != pnode->pleft )
-		InOrder(pnode->pleft, showdata_proc);
+		PostOrder(pnode->pleft, showdata_proc);
 
 	if( NULL != pnode->pright)
-		InOrder(pnode->pright, showdata_proc);
+		PostOrder(pnode->pright, showdata_proc);
 
 	showdata_proc(pnode->data);
+}
+
+template <typename _T>
+void BinarySearchTree<_T>::InOrder_Iterative(Node* pnode, P_SHOW_FUNC<_T> showdata_proc)
+{
+	Stack<Node*> *stack = new Stack<Node*>();
+
+	Node* run = pnode;
+
+	stack->Push(run);
+
+	while( 0 != stack->Size())
+	{
+		while( run != NULL )
+		{
+			//std::cout << "-" << run->data << "-" << run->pleft->data << std::endl;
+			run = run->pleft;
+			if(!run)
+				break;
+			stack->Push(run);
+		}
+
+		run = stack->Pop();
+
+		showdata_proc(run->data);
+
+		run = run->pright;
+		if( run )
+			stack->Push(run);
+	}
+}
+
+template <typename _T>
+void BinarySearchTree<_T>::PreOrder_Iterative(Node* pnode, P_SHOW_FUNC<_T> showdata_proc)
+{
+	Stack<Node*> *stack = new Stack<Node*>();
+
+	stack->Push(pnode);
+
+	while( 0 != stack->Size() )
+	{
+		while( pnode != NULL )
+		{
+			showdata_proc(pnode->data);
+			pnode = pnode->pleft;
+			if( !pnode )
+				break;
+			stack->Push(pnode);
+		}
+
+		pnode = stack->Pop();
+
+		if( pnode->pright )
+			stack->Push(pnode->pright);
+		pnode = pnode->pright;
+	}
+}
+
+template <typename _T>
+void BinarySearchTree<_T>::PostOrder_Iterative(Node* pnode, P_SHOW_FUNC<_T> showdata_proc)
+{
+	Stack<Node*> *stack = new Stack<Node*>();
+
+	bool flag = true;
+
+	while( 0 != stack->Size() || flag)
+	{
+		flag = false;
+		while( pnode )
+		{
+			if( pnode->pright )
+				stack->Push(pnode->pright);
+			
+			stack->Push(pnode);
+
+			pnode = pnode->pleft;
+		}
+		
+		pnode = stack->Pop();
+
+		if( pnode && pnode->pright == stack->Peek() )
+		{
+			stack->Pop();
+			stack->Push(pnode);
+			
+			pnode = pnode->pright;
+		}
+		else 
+		{
+			showdata_proc(pnode->data);
+			pnode = NULL;
+		}
+	}
 }
 
 template <typename _T>
@@ -323,6 +425,27 @@ inline	void BinarySearchTree<_T>::TreePostOrder(P_SHOW_FUNC<_T> showdata_proc)
 {
 	if(NULL != m_Root)
 		PostOrder(m_Root, showdata_proc);
+}
+
+template <typename _T>
+inline	void BinarySearchTree<_T>::TreeInOrder_Iterative(P_SHOW_FUNC<_T> showdata_proc)
+{	
+	if(NULL != m_Root)
+		InOrder_Iterative(m_Root, showdata_proc);
+}
+
+template <typename _T>
+inline	void BinarySearchTree<_T>::TreePreOrder_Iterative(P_SHOW_FUNC<_T> showdata_proc)
+{
+	if(NULL != m_Root)
+		PreOrder_Iterative(m_Root, showdata_proc);
+}
+
+template <typename _T>
+inline	void BinarySearchTree<_T>::TreePostOrder_Iterative(P_SHOW_FUNC<_T> showdata_proc)
+{
+	if(NULL != m_Root)
+		PostOrder_Iterative(m_Root, showdata_proc);
 }
 
 template <typename _T>

@@ -59,40 +59,60 @@ int main(void)
 	std::cout << "Tree Data:" ;
 	bst->TreeInOrder(show);
 	std::cout << std::endl;
-
-	bst->TreeDeleteNode(75, compare2);
-	std::cout << "Tree Data:";
-	bst->TreeInOrder(show);
+	
+	std::cout << "Tree Data:" ;
+	bst->TreeInOrder_Iterative(show);
 	std::cout << std::endl;
 
-	bst->TreeDeleteNode(25, compare2);
-	std::cout << "Tree Data:";
-	bst->TreeInOrder(show);
-	std::cout << std::endl;
-
-	bst->TreeDeleteNode(70, compare2);
-	std::cout << "Tree Data:";
-	bst->TreeInOrder(show);
-	std::cout << std::endl;
-
-	bst->TreeDeleteNode(50, compare2);
-	std::cout << "Tree Data:";
-	bst->TreeInOrder(show);
+	std::cout << "Tree Data:" ;
+	bst->TreePreOrder(show);
 	std::cout << std::endl;
 	
+	std::cout << "Tree Data:" ;
+	bst->TreePreOrder_Iterative(show);
 	std::cout << std::endl;
-	std::cout << bst->TreeSearchNode( 50, compare2);
+
+	std::cout << "Tree Data:" ;
+	bst->TreePostOrder(show);
+	std::cout << std::endl;
 	
+	std::cout << "Tree Data:" ;
+	bst->TreePostOrder_Iterative(show);
 	std::cout << std::endl;
-	std::cout << bst->TreeSearchNode( 40, compare2);
 
-	std::cout << std::endl;
-	std::cout << std::endl;
-	bst->TreeDestroy(show2);
+	// bst->TreeDeleteNode(75, compare2);
+	// std::cout << "Tree Data:";
+	// bst->TreeInOrder(show);
+	// std::cout << std::endl;
 
-	std::cout << "Tree Data:";
-	bst->TreeInOrder(show);
-	std::cout << std::endl;
+	// bst->TreeDeleteNode(25, compare2);
+	// std::cout << "Tree Data:";
+	// bst->TreeInOrder(show);
+	// std::cout << std::endl;
+
+	// bst->TreeDeleteNode(70, compare2);
+	// std::cout << "Tree Data:";
+	// bst->TreeInOrder(show);
+	// std::cout << std::endl;
+
+	// bst->TreeDeleteNode(50, compare2);
+	// std::cout << "Tree Data:";
+	// bst->TreeInOrder(show);
+	// std::cout << std::endl;
+	
+	// std::cout << std::endl;
+	// std::cout << bst->TreeSearchNode( 50, compare2);
+	
+	// std::cout << std::endl;
+	// std::cout << bst->TreeSearchNode( 40, compare2);
+
+	// std::cout << std::endl;
+	// std::cout << std::endl;
+	// bst->TreeDestroy(show2);
+
+	// std::cout << "Tree Data:";
+	// bst->TreeInOrder(show);
+	// std::cout << std::endl;
 	
 	return(0);
 }
