@@ -37,11 +37,11 @@ typedef     struct graph_dummy      graph_dummy_t;
 typedef     struct graph_dummy*     p_graph_dummy_t;
 typedef     struct graph_dummy**    pp_graph_dummy_t;
 
-struct  queue_node;
+struct  dfs_bfs_node;
 
-typedef     struct queue_node   queue_node_t;
-typedef     struct queue_node*  p_queue_node_t;
-typedef     struct queue_node** pp_queue_node_t;
+typedef     struct dfs_bfs_node   dfs_bfs_node_t;
+typedef     struct dfs_bfs_node*  p_dfs_bfs_node_t;
+typedef     struct dfs_bfs_node** pp_dfs_bfs_node_t;
 
 typedef     void*   graph_t;
 typedef     int     status_t;
@@ -82,13 +82,13 @@ struct  graph_dummy
 };
 #define     SIZE_GRAPH      (sizeof(graph_dummy_t))
 
-struct queue_node
+struct dfs_bfs_node
 {
     p_vertex_t data;
     long  parent;
     size_t  weight;
 };
-#define     SIZE_QUEUE_NODE     (sizeof(queue_node_t))
+#define     SIZE_DFS_BFS_NODE     (sizeof(dfs_bfs_node_t))
 
 typedef     void(*SHOWEDGE_PROC)(graph_data_t, size_t);
 
@@ -98,7 +98,7 @@ static  void*   Xcalloc(size_t  nr_elements, size_t element_size);
 static  p_vertex_t  create_vertex(graph_data_t data);
 static  p_edge_t    create_edge(p_vertex_t pvertex, size_t weight);
 
-static  p_queue_node_t  create_queue_node(p_vertex_t vertex, long parent_index, size_t weight);
+static  p_dfs_bfs_node_t  create_dfs_bfs_node(p_vertex_t vertex, long parent_index, size_t weight);
 
 static  p_vertex_t  locate_vertex(  graph_t graph, 
                                     graph_data_t data,
@@ -165,7 +165,13 @@ extern  void    graph_breadth_first_search_all_vertices(graph_t graph,
                                                         SHOWDATA_PROC pshowdata);
                                                 
 extern  void    graph_deapth_first_search(  graph_t graph,
+                                            graph_data_t source,
+                                            COMPARE_PROC pcompare,
                                             SHOWDATA_PROC pshowdata);
+
+extern  void    graph_deapth_first_search_all_vertices( graph_t graph,
+                                                        COMPARE_PROC pcompare,
+                                                        SHOWDATA_PROC pshowdata);
 
 extern  void    graph_dijkstras_shortest_path(  graph_t graph,
                                                 SHOWDATA_PROC pshowdata);

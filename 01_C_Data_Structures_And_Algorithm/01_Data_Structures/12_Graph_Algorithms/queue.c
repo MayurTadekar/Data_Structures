@@ -3,7 +3,7 @@
 /**
  * @file queue.c
  * @author Mayur Tadekar
- * @brief Source Code of Generic Data Implements of Queue Data Structure
+ * @brief Source Code of Helper Queue Data Structure for Graph
  * @version 0.1
  * @date 2022-05-07
  * 

@@ -146,8 +146,21 @@ int main(void)
                                             compare,
                                             showdata);
     NEW_LINE;
+
+    NEW_LINE;
     
+    printf("Deapth First Search All Vertices:\n");
+    graph_deapth_first_search(graph,
+                                (graph_data_t)(size_t)80,
+                                compare,
+                                showdata);
+    NEW_LINE;
     
+    printf("Deapth First Search All Vertices:\n");
+    graph_deapth_first_search_all_vertices( graph,
+                                            compare,
+                                            showdata);
+    NEW_LINE;
     // graph_remove_edge(graph, (graph_data_t)(size_t)10, (graph_data_t)(size_t)20, compare);
 
     // NEW_LINE;

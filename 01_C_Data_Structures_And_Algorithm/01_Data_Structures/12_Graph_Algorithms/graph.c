@@ -16,6 +16,7 @@
 
 #include    "graph.h"
 #include    "queue.h"
+#include    "stack.h"
 
 //  Graph Auxillary Functions
 /**
@@ -74,11 +75,11 @@ static  p_edge_t    create_edge(p_vertex_t pvertex, size_t weight)
  * @param vertex vertex to add to queue node
  * @param parent_index index of parent node
  * @param weight weight of path till this vertex 
- * @return p_queue_node_t returning the address of allocated queue node
+ * @return p_dfs_bfs_node_t returning the address of allocated queue node
  */
-static  p_queue_node_t  create_queue_node(p_vertex_t vertex, long parent_index, size_t weight)
+static  p_dfs_bfs_node_t  create_dfs_bfs_node(p_vertex_t vertex, long parent_index, size_t weight)
 {
-    p_queue_node_t pq = (p_queue_node_t) Xcalloc(1, SIZE_QUEUE_NODE);
+    p_dfs_bfs_node_t pq = (p_dfs_bfs_node_t) Xcalloc(1, SIZE_DFS_BFS_NODE);
     pq->data = vertex;
     pq->weight = weight;
     pq->parent = parent_index;
@@ -557,7 +558,7 @@ extern  void    graph_breadth_first_search( graph_t graph,
 
     queue_t queue = create_queue();
 
-    queue_enqueue(queue, create_queue_node(psource, -1, 0) );
+    queue_enqueue(queue, create_dfs_bfs_node(psource, -1, 0) );
 
     ((p_vertex_t)queue_first(queue))->color = COLOR_GRAY;
 
@@ -567,7 +568,7 @@ extern  void    graph_breadth_first_search( graph_t graph,
     printf("{START}");
     while( index < queue_size(queue) )
     {
-        p_queue_node_t pn = queue_at(queue, index);
+        p_dfs_bfs_node_t pn = queue_at(queue, index);
         
         for( int i = 0 ; i < list_size( pn->data->edges ); ++i )
         {
@@ -577,7 +578,7 @@ extern  void    graph_breadth_first_search( graph_t graph,
             
             if( COLOR_WHITE == pv_child->color )
             {
-                queue_enqueue( queue, create_queue_node( pv_child, index, weight + pn->weight) );
+                queue_enqueue( queue, create_dfs_bfs_node( pv_child, index, weight + pn->weight) );
                 pv_child->color = COLOR_GRAY;
             }
         }
@@ -620,6 +621,112 @@ extern  void    graph_breadth_first_search_all_vertices(graph_t graph,
         pshowdata(pv->data);
         printf("\n");
         graph_breadth_first_search( graph, 
+                                    pv->data,
+                                    pcompare,
+                                    pshowdata);
+    } 
+}
+
+/**
+ * @brief Graph Depth first search for the source
+ * 
+ * @param graph to travel in depth first order
+ * @param source to start the traversal from
+ * @param pcompare Callback function to compare data 
+ * @param pshowdata callback function to show data
+ */
+extern  void    graph_deapth_first_search(  graph_t graph,
+                                            graph_data_t source,
+                                            COMPARE_PROC pcompare,
+                                            SHOWDATA_PROC pshowdata)
+{
+
+    //  Code
+    //  Code
+    p_graph_dummy_t pd = (p_graph_dummy_t)graph;
+    if( NULL == pd  ||
+        0 == pd->nr_elements)
+    {
+        return;
+    }
+
+    p_vertex_t psource = NULL;
+
+    for( int i = 0; i < list_size(pd->vertices); ++i )
+    {
+        p_vertex_t pv = (p_vertex_t)list_at(pd->vertices, i);
+        pv->color = COLOR_WHITE;
+
+        if( SUCCESS == pcompare(pv->data, source) )
+            psource = pv;
+    }
+
+    if( NULL == psource )
+    {
+        fprintf(stderr, "ERROR: No source node found\n");
+        return;
+    }
+
+    stack_t stack = create_stack();
+    
+    stack_push( stack, create_dfs_bfs_node(psource, -1, 0) );
+
+    p_dfs_bfs_node_t pn = (p_dfs_bfs_node_t) stack_peek( stack );
+    pn->data->color = COLOR_GRAY;
+
+    printf("{START}");
+    printf("->");
+    pshowdata(pn->data->data);
+
+    while( 0 != stack_size(stack) )
+    {
+        pn = (p_dfs_bfs_node_t) stack_pop( stack );
+        for( int i = 0; i < list_size( pn->data->edges ); ++i )
+        {
+            p_edge_t pedge = (p_edge_t) list_at( pn->data->edges, i );
+            if( pedge->vertex->color == COLOR_WHITE )
+            {
+                stack_push( stack, create_dfs_bfs_node( pedge->vertex, 0, pn->weight + pedge->weight ) );
+                i = -1;
+                pn = stack_peek(stack);
+                pn->data->color = COLOR_GRAY;
+                printf("->");
+                pshowdata(pn->data->data);
+                continue;
+            }
+        }
+        pn->data->color = COLOR_BLACK;
+    }
+    printf("->{END}\n");
+
+    stack_destroy( &stack );
+}
+/**
+ * @brief Graph deapth first search all the vertices as source
+ * 
+ * @param graph graph to travel 
+ * @param pcompare Callback function to compare data 
+ * @param pshowdata Callback function to show data
+ */
+extern  void    graph_deapth_first_search_all_vertices( graph_t graph,
+                                                        COMPARE_PROC pcompare,
+                                                        SHOWDATA_PROC pshowdata)
+{
+    p_graph_dummy_t pd = (p_graph_dummy_t)graph;
+    if( NULL == pd  ||
+        0 == pd->nr_elements)
+    {
+        return;
+    }
+
+    for( int i = 0; i < list_size(pd->vertices); ++i )
+    {
+        p_vertex_t pv = (p_vertex_t)list_at(pd->vertices, i);
+        printf("\n");
+        printf("Vertex => ");
+        pshowdata(pv->data);
+        printf("\n");
+        graph_deapth_first_search(  graph, 
                                     pv->data,
                                     pcompare,
                                     pshowdata);
