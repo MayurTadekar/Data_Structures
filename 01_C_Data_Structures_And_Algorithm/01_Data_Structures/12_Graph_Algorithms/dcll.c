@@ -3,7 +3,7 @@
 /**
  * @file dcll.c
  * @author Mayur Tadekar
- * @brief 
+ * @brief Source Code of Generic Data Implements of Doubly Circular Linker List Data Structure
  * @version 0.1
  * @date 05-06-2022
  * 

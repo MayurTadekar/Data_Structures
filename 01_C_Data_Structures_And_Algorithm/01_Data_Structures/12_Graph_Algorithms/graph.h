@@ -37,8 +37,13 @@ typedef     struct graph_dummy      graph_dummy_t;
 typedef     struct graph_dummy*     p_graph_dummy_t;
 typedef     struct graph_dummy**    pp_graph_dummy_t;
 
-typedef     void*   graph_t;
+struct  queue_node;
 
+typedef     struct queue_node   queue_node_t;
+typedef     struct queue_node*  p_queue_node_t;
+typedef     struct queue_node** pp_queue_node_t;
+
+typedef     void*   graph_t;
 typedef     int     status_t;
 
 typedef enum
@@ -58,6 +63,7 @@ struct  graph_vertex
 {
     graph_data_t  data;
     list_t  edges;
+    color_t color;
 };
 #define     SIZE_VERTEX         (sizeof(vertex_t))
 
@@ -76,6 +82,14 @@ struct  graph_dummy
 };
 #define     SIZE_GRAPH      (sizeof(graph_dummy_t))
 
+struct queue_node
+{
+    p_vertex_t data;
+    long  parent;
+    size_t  weight;
+};
+#define     SIZE_QUEUE_NODE     (sizeof(queue_node_t))
+
 typedef     void(*SHOWEDGE_PROC)(graph_data_t, size_t);
 
 //  Graph Auxillary Functions
@@ -83,6 +97,8 @@ static  void*   Xcalloc(size_t  nr_elements, size_t element_size);
 
 static  p_vertex_t  create_vertex(graph_data_t data);
 static  p_edge_t    create_edge(p_vertex_t pvertex, size_t weight);
+
+static  p_queue_node_t  create_queue_node(p_vertex_t vertex, long parent_index, size_t weight);
 
 static  p_vertex_t  locate_vertex(  graph_t graph, 
                                     graph_data_t data,
@@ -120,21 +136,54 @@ extern  graph_data_t    graph_remove_vertex(graph_t graph,
                                             graph_data_t  v,
                                             COMPARE_PROC pcompare);
 
-extern  status_t        graph_remove_edge(  graph_t graph,
-                                            graph_data_t v1,
-                                            graph_data_t v2,
-                                            COMPARE_PROC pcompare);
+extern  status_t    graph_remove_edge(  graph_t graph,
+                                        graph_data_t v1,
+                                        graph_data_t v2,
+                                        COMPARE_PROC pcompare);
 
-extern  status_t        graph_remove_directed_edge(  graph_t graph,
-                                                    graph_data_t v1,
-                                                    graph_data_t v2,
-                                                    COMPARE_PROC pcompare);
+extern  status_t    graph_remove_directed_edge( graph_t graph,
+                                                graph_data_t v1,
+                                                graph_data_t v2,
+                                                COMPARE_PROC pcompare);
 
-extern  void        graph_show( graph_t graph,
-                                SHOWDATA_PROC pvertex_show,
-                                SHOWEDGE_PROC pedge_show);
+extern  void    graph_show( graph_t graph,
+                            SHOWDATA_PROC pvertex_show,
+                            SHOWEDGE_PROC pedge_show);
 
-extern  void        graph_destroy(  graph_t* pgraph,
-                                    DELETEDATA_PROC pdelete);
+extern  void    graph_destroy(  graph_t* pgraph,
+                                DELETEDATA_PROC pdelete);
+
+//  Graph Algorithm Interface Functions
+
+extern  void    graph_breadth_first_search( graph_t graph,
+                                            graph_data_t source,
+                                            COMPARE_PROC pcompare,
+                                            SHOWDATA_PROC pshowdata);
+                                            
+extern  void    graph_breadth_first_search_all_vertices(graph_t graph,
+                                                        COMPARE_PROC pcompare,
+                                                        SHOWDATA_PROC pshowdata);
+                                                
+extern  void    graph_deapth_first_search(  graph_t graph,
+                                            SHOWDATA_PROC pshowdata);
+
+extern  void    graph_dijkstras_shortest_path(  graph_t graph,
+                                                SHOWDATA_PROC pshowdata);
+
+extern  void    graph_bellmann_ford(graph_t graph,
+                                    SHOWDATA_PROC pshowdata);
+
+extern  void    graph_floyd_warshall(   graph_t graph,
+                                        SHOWDATA_PROC pshowdata);
+
+extern  void    graph_prims_algorithm(  graph_t graph,
+                                        SHOWDATA_PROC pshowdata);
+
+extern  void    graph_kruskals_algorithm(   graph_t graph,
+                                            SHOWDATA_PROC pshowdata);
+
+extern  void    graph_ford_fulkerson(   graph_t graph,
+                                        SHOWDATA_PROC pshowdata);
+
 #endif      /* _GRAPH_H */
 

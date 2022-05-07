@@ -3,7 +3,7 @@
 /**
  * @file graph.c
  * @author Mayur Tadekar 
- * @brief 
+ * @brief Source Code of Generic Data Implements of Graph Data Structure
  * @version 0.1
  * @date 05-06-2022
  * 
@@ -15,6 +15,7 @@
 #include    <stdlib.h>
 
 #include    "graph.h"
+#include    "queue.h"
 
 //  Graph Auxillary Functions
 /**
@@ -65,6 +66,23 @@ static  p_edge_t    create_edge(p_vertex_t pvertex, size_t weight)
     pe->vertex = pvertex;
     pe->weight = weight;
     return(pe);
+}
+
+/**
+ * @brief Create a queue node object
+ * 
+ * @param vertex vertex to add to queue node
+ * @param parent_index index of parent node
+ * @param weight weight of path till this vertex 
+ * @return p_queue_node_t returning the address of allocated queue node
+ */
+static  p_queue_node_t  create_queue_node(p_vertex_t vertex, long parent_index, size_t weight)
+{
+    p_queue_node_t pq = (p_queue_node_t) Xcalloc(1, SIZE_QUEUE_NODE);
+    pq->data = vertex;
+    pq->weight = weight;
+    pq->parent = parent_index;
+    return(pq);
 }
 
 /**
@@ -493,4 +511,117 @@ extern  void        graph_destroy(  graph_t* pgraph,
 
     free(*pgraph);
     *pgraph = NULL;
+}
+
+
+//  Graph Algorithm Interface Functions
+
+/**
+ * @brief Graph breadth first search
+ * 
+ * @param graph graph to travel 
+ * @param source to start the searching from
+ * @param pcompare Callback function to compare data 
+ * @param pshowdata Callback function to show data
+ */
+
+extern  void    graph_breadth_first_search( graph_t graph,
+                                            graph_data_t source,
+                                            COMPARE_PROC pcompare,
+                                            SHOWDATA_PROC pshowdata)
+{
+    //  Code
+    p_graph_dummy_t pd = (p_graph_dummy_t)graph;
+    if( NULL == pd  ||
+        0 == pd->nr_elements)
+    {
+        return;
+    }
+
+    p_vertex_t psource = NULL;
+
+    for( int i = 0; i < list_size(pd->vertices); ++i )
+    {
+        p_vertex_t pv = (p_vertex_t)list_at(pd->vertices, i);
+        pv->color = COLOR_WHITE;
+
+        if( SUCCESS == pcompare(pv->data, source) )
+            psource = pv;
+    }
+
+    if( NULL == psource )
+    {
+        fprintf(stderr, "ERROR: No source node found\n");
+        return;
+    }
+
+    queue_t queue = create_queue();
+
+    queue_enqueue(queue, create_queue_node(psource, -1, 0) );
+
+    ((p_vertex_t)queue_first(queue))->color = COLOR_GRAY;
+
+    long index = 0; 
+    size_t w = 0;
+
+    printf("{START}");
+    while( index < queue_size(queue) )
+    {
+        p_queue_node_t pn = queue_at(queue, index);
+        
+        for( int i = 0 ; i < list_size( pn->data->edges ); ++i )
+        {
+            p_vertex_t pv_child = ((p_edge_t)list_at(pn->data->edges, i))->vertex;
+            size_t weight = ((p_edge_t)list_at(pn->data->edges, i))->weight;
+            //printf("->->%zd\n", weight)
+            
+            if( COLOR_WHITE == pv_child->color )
+            {
+                queue_enqueue( queue, create_queue_node( pv_child, index, weight + pn->weight) );
+                pv_child->color = COLOR_GRAY;
+            }
+        }
+        pn->data->color = COLOR_BLACK;
+        printf("->");
+        pshowdata(pn->data->data);
+        index++;
+        w = pn->weight;
+        //free(pn);
+    }
+
+    queue_destroy(&queue);
+
+    printf("->{END} : %zd(path weight) \n", w);
+}
+
+/**
+ * @brief Graph breadth first search all the vertices as source
+ * 
+ * @param graph graph to travel 
+ * @param pcompare Callback function to compare data 
+ * @param pshowdata Callback function to show data
+ */
+extern  void    graph_breadth_first_search_all_vertices(graph_t graph,
+                                                        COMPARE_PROC pcompare,
+                                                        SHOWDATA_PROC pshowdata)
+{
+    p_graph_dummy_t pd = (p_graph_dummy_t)graph;
+    if( NULL == pd  ||
+        0 == pd->nr_elements)
+    {
+        return;
+    }
+
+    for( int i = 0; i < list_size(pd->vertices); ++i )
+    {
+        p_vertex_t pv = (p_vertex_t)list_at(pd->vertices, i);
+        printf("\n");
+        printf("Vertex => ");
+        pshowdata(pv->data);
+        printf("\n");
+        graph_breadth_first_search( graph, 
+                                    pv->data,
+                                    pcompare,
+                                    pshowdata);
+    } 
 }

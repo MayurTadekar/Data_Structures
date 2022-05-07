@@ -12,8 +12,8 @@
 
 //#include    "dcll.h"
 #include    "graph.h"
-
-//list_t list;
+    
+#define     NEW_LINE    (printf("\n"))
 
 graph_t graph;
 
@@ -114,7 +114,7 @@ int main(void)
 
     graph_show(graph, showdata, showedge);
 
-    printf("\n");
+    NEW_LINE;
     printf("\nDeleted = %zd\n", (size_t) graph_remove_vertex(graph, 
                                         (graph_data_t)(size_t) 30,
                                         compare)
@@ -127,23 +127,38 @@ int main(void)
                                         (graph_data_t)(size_t) 90,
                                         compare)
     );
-    printf("\n");
+    NEW_LINE;
 
-    printf("\n");
+    NEW_LINE;
     graph_show(graph, showdata, showedge);
-    printf("\n");
+    NEW_LINE;
+    NEW_LINE;
+
+    printf("Breadth First Search Single Source:\n");
+    graph_breadth_first_search( graph,
+                                (graph_data_t)(size_t)80,
+                                compare,
+                                showdata);
+    NEW_LINE;
     
-    graph_remove_edge(graph, (graph_data_t)(size_t)10, (graph_data_t)(size_t)20, compare);
+    printf("Breadth First Search All Vertices:\n");
+    graph_breadth_first_search_all_vertices(graph,
+                                            compare,
+                                            showdata);
+    NEW_LINE;
+    
+    
+    // graph_remove_edge(graph, (graph_data_t)(size_t)10, (graph_data_t)(size_t)20, compare);
 
-    printf("\n");
-    graph_show(graph, showdata, showedge);
-    printf("\n");
+    // NEW_LINE;
+    // graph_show(graph, showdata, showedge);
+    // NEW_LINE;
 
-    graph_destroy(&graph, deletedata);
+    // graph_destroy(&graph, deletedata);
 
-    printf("\n");
-    graph_show(graph, showdata, showedge);
-    printf("\n");
+    // NEW_LINE;
+    // graph_show(graph, showdata, showedge);
+    // NEW_LINE;
 
     return(0);    
 }
