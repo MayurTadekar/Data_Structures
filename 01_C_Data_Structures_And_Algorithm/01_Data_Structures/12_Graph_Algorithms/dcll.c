@@ -1,10 +1,14 @@
 
 
 /**
- * @author  Mayur Tadekar    
- * @date    05th May, 2022 
- * @details Source code of Doubly Circular Linked List implementing all
- *          auxillary and interface functions
+ * @file dcll.c
+ * @author Mayur Tadekar
+ * @brief 
+ * @version 0.1
+ * @date 05-06-2022
+ * 
+ * @copyright Copyright (c) 2022
+ * 
  */
 
 #include    <stdio.h>
@@ -325,7 +329,8 @@ extern  dcll_status_t    list_destroy(p_list_t plist, DELETEDATA_PROC pdeletedat
 
     while( run != NULL && pd->list != run)
     {
-        pdeletedata(run->data);
+        if( NULL != pdeletedata )
+            pdeletedata(run->data);
         run_next = run->pnext;
 
         free(run);
