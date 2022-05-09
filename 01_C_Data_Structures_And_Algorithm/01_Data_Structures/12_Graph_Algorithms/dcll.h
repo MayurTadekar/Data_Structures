@@ -12,8 +12,13 @@
 
 //  Literals and Typedefs
 
-#define     SUCCESS     1
-#define     FAILURE     0
+#ifndef     SUCCESS
+#define     SUCCESS     0
+#endif
+
+#ifndef     FAILURE
+#define     FAILURE     1
+#endif
 
 typedef     void*       dcll_data_t;
 
@@ -62,6 +67,12 @@ static  p_dcll_node_t   list_create_node(dcll_data_t data);
 
 static  p_dcll_node_t   list_locate_node(list_t list, dcll_data_t edata, COMPARE_PROC pcompare);
 
+static  void        list_assign_data(list_t list, long index, dcll_data_t data);
+
+static  void        merge(list_t list, long left, long mid, long right, COMPARE_PROC pcompare);
+
+static  void        merge_sort(list_t list, long first, long last, COMPARE_PROC pcompare);
+
 //  List Interface Functions
 extern  list_t  create_list();
 
@@ -76,6 +87,8 @@ extern  dcll_data_t     list_remove_last(list_t list);
 extern  dcll_data_t     list_at(list_t list, int index);
 
 extern  size_t  list_size(list_t list);
+
+extern  void    list_sort(list_t list, COMPARE_PROC pcompare);    
 
 extern  void    list_show(list_t list, SHOWDATA_PROC pshowdata);
 

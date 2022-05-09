@@ -111,6 +111,111 @@ static  p_dcll_node_t   list_locate_node(list_t list, dcll_data_t edata, COMPARE
     return(run);
 }
 
+/**
+ * @brief Assign data to list at index
+ * 
+ * @param list to assign data to 
+ * @param index to assign data at
+ * @param data to assign in list at index
+ */
+static  void        list_assign_data(list_t list, long index, dcll_data_t data)
+{
+    //  Code
+    
+    p_dcll_node_t run = ((p_dcll_dummy_t)list)->list->pnext;
+
+    for( int i = 0; i < index; ++i )
+        run = run->pnext;
+
+    run->data = data;
+}
+
+
+/**
+ * @brief Merge function to merge sorted list
+ * 
+ * @param list base node of list
+ * @param first index of list element
+ * @param mid index of list element
+ * @param last index of list element
+ */
+static  void         merge(list_t list, long left, long mid, long right, COMPARE_PROC pcompare)
+{
+    //  Code
+
+    long    lSize = mid - left + 1;
+    long    rSize = right - mid;
+
+    list_t list_left = create_list();
+    list_t list_right = create_list();
+
+    //printf("%d - %d\n", lSize, rSize);
+
+    for( int i = 0; i < lSize; ++i )
+        list_insert_back( list_left, list_at(list, left + i) );
+    
+    for( int i = 0; i < rSize; ++i )
+        list_insert_back( list_right, list_at(list, mid + 1 + i ));
+
+    long    i = 0;
+    long    j = 0;
+    long    k = left;
+
+    for( k = left; k <= right; ++k )
+    {
+        if( i < lSize && j < rSize )
+        {
+            if( SUCCESS == pcompare( list_at(list_left, i), list_at(list_right, j) ) )
+            {
+                list_assign_data( list, k, list_at(list_left, i) );
+                i++;
+            }
+            else
+            {
+                list_assign_data( list, k, list_at(list_right, j) );
+                j++;
+            }
+        }
+        else
+        {
+            if( j < list_size(list_right) )
+            {
+                list_assign_data( list, k, list_at(list_right, j) );
+                j++;
+            }
+            else if( i < list_size(list_left) )
+            {
+                list_assign_data( list, k, list_at(list_left, i) );
+                i++;
+            }
+        }
+    }
+
+    list_destroy( &list_left, NULL );
+    list_destroy( &list_right, NULL );
+}
+
+
+/**
+ * @brief Merge Sort  function for list
+ * 
+ * @param list base node
+ * @param first first index of list element
+ * @param last last index of list element
+ */
+static  void         merge_sort(list_t list, long first, long last, COMPARE_PROC pcompare)
+{
+    //  Code
+    if( last <= first )
+        return;
+
+    long mid = ( last + first ) / 2;     
+
+    merge_sort(list, first, mid, pcompare);
+    merge_sort(list, mid+1, last, pcompare);
+    merge(list, first, mid, last, pcompare);
+}
+
 //  List Interface Functions
 
 /**
@@ -176,6 +281,7 @@ extern  dcll_status_t    list_insert_back(list_t list, dcll_data_t data)
         return(FAILURE);
 
     ((p_dcll_dummy_t)list)->nr_elements++;
+    //printf("\n%p", data);
     return( list_generic_insert(((p_dcll_dummy_t)list)->list->pprev,
                                 list_create_node(data),
                                 ((p_dcll_dummy_t)list)->list ) );
@@ -283,6 +389,29 @@ extern  size_t      list_size(list_t list)
     
     return(((p_dcll_dummy_t)list)->nr_elements);
 }
+
+/**
+ * @brief Sort elements of list
+ * 
+ * @param list to sort 
+ * @param pcompare callback function for comparing data
+ */
+extern  void    list_sort(list_t list, COMPARE_PROC pcompare)
+{
+    //  Code
+    p_dcll_dummy_t pl = (p_dcll_dummy_t)list;
+    if( NULL == pl  ||
+        NULL == pl->list   ||
+        0 == pl->nr_elements )
+    {
+        return;
+    }
+
+    //printf("1\n");
+    merge_sort(list, 0, pl->nr_elements - 1, pcompare);
+    //printf("2\n");
+}    
+
 
 /**
  * @brief Traversing through the list to retrive data of each element

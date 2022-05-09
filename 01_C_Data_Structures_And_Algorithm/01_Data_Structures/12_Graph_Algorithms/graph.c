@@ -17,6 +17,10 @@
 #include    "graph.h"
 #include    "queue.h"
 #include    "stack.h"
+#include    "disjointset.h"
+
+//  Graph Global Variables
+COMPARE_PROC g_compare = NULL;
 
 //  Graph Auxillary Functions
 /**
@@ -87,6 +91,24 @@ static  p_dfs_bfs_node_t  create_dfs_bfs_node(p_vertex_t vertex, long parent_ind
 }
 
 /**
+ * @brief Create a mst node object
+ * 
+ * @param v1 Vertex1
+ * @param v2 Vertex2
+ * @param weight weight of the edge
+ * @return p_mst_node_t returning address of allocated mst node object 
+ */
+static  p_mst_node_t    create_mst_node(p_vertex_t v1, p_vertex_t v2, size_t weight)
+{
+    //  Code
+    p_mst_node_t p = (p_mst_node_t)Xcalloc(1, SIZE_MST_NODE);
+    p->v1 = v1;
+    p->v2 = v2;
+    p->weight = weight;
+    return(p);
+}
+
+/**
  * @brief Locating the specific vertex in vertices list
  * 
  * @param graph The graph to get the specific vertex
@@ -151,8 +173,15 @@ static  status_t   compare( dcll_data_t d1,
     //  Code
     if( d1 == d2 )
         return(SUCCESS);
+    //printf("\n%zd == %zd\n", ((p_vertex_t)d1)->data, ((p_vertex_t)d2)->data );
     
     return(FAILURE);
+}
+
+static status_t     compare_vertex( dcll_data_t d1, 
+                                    dcll_data_t d2)
+{
+    return( g_compare( ((p_vertex_t)d1)->data, ((p_vertex_t)d2)->data ) );
 }
 
 /**
@@ -172,7 +201,287 @@ static  status_t   compare_edges(   dcll_data_t d1,
     return(FAILURE);
 }
 
-//  Graph Interface Functions
+
+/**
+ * @brief Adding a new edge to the graph
+ * 
+ * @param graph Graph to add edge to
+ * @param v1 Vertex1 of the edge
+ * @param v2 Vertex2 of the edge
+ * @param weight weight of the edge between v1 and v2
+ * @param pcompare Callback function to compare data
+ * @return status_t returning status of instertion of the edge
+ */
+extern  status_t    graph_add_undirected_edge(  graph_t  graph, 
+                                                graph_data_t v1, 
+                                                graph_data_t v2, 
+                                                size_t  weight,
+                                                COMPARE_PROC pcompare)
+{
+    //  Code
+    p_vertex_t pv1 = locate_vertex(graph, v1, pcompare);
+    p_vertex_t pv2 = locate_vertex(graph, v2, pcompare);
+
+    if( NULL == pv1     ||
+        NULL == pv2     ||
+        SUCCESS == pcompare(pv1->data, pv2->data))
+    {
+        return(FAILURE);
+    }
+    
+    if( NULL != locate_edge(pv1, v2, pcompare)   ||
+        NULL != locate_edge(pv2, v1, pcompare))
+        return(FAILURE);
+    
+    list_insert_back(pv1->edges, create_edge(pv2, weight));
+    list_insert_back(pv2->edges, create_edge(pv1, weight));
+
+    return(SUCCESS);
+}
+
+/**
+ * @brief Adding a directed edge to the graph
+ * 
+ * @param graph The graph to add edge to
+ * @param v1 Vertex1 of the edge
+ * @param v2 vertex2 of the edge
+ * @param weight weight of the edge between v1 and v2
+ * @param pcompare callback function to compare data
+ * @return status_t returning status of insertion of edge
+ */
+extern  status_t    graph_add_directed_edge(graph_t graph,
+                                            graph_data_t v1,
+                                            graph_data_t v2,
+                                            size_t weight,
+                                            COMPARE_PROC pcompare)
+{
+    //  Code
+    
+    p_vertex_t pv1 = locate_vertex(graph, v1, pcompare);
+    p_vertex_t pv2 = locate_vertex(graph, v2, pcompare);
+
+    if( NULL == pv1     ||
+        NULL == pv2     ||
+        SUCCESS == pcompare(pv1->data, pv2->data))
+    {
+        return(FAILURE);
+    }
+
+    if( NULL != locate_edge(pv1, v2, pcompare)   ||
+        NULL != locate_edge(pv2, v1, pcompare))
+    {
+        return(FAILURE);
+    }
+    
+    return(list_insert_back( pv1->edges, create_edge(pv2, weight) ) );
+}
+
+
+/**
+ * @brief Removing edge from graph
+ * 
+ * @param graph Graph to remove edge from
+ * @param v1 Vertex1 of the edge
+ * @param v2 Vertex2 of the edge
+ * @param pcompare Callback function to compare data 
+ * @return status_t returning status of removing edge
+ */
+static  status_t        graph_remove_undirected_edge(   graph_t graph,
+                                                        graph_data_t v1,
+                                                        graph_data_t v2,
+                                                        COMPARE_PROC pcompare)
+{
+    //  Code
+    
+    p_vertex_t pv1 = locate_vertex(graph, v1, pcompare);
+    p_vertex_t pv2 = locate_vertex(graph, v2, pcompare);
+    //printf("0\n");
+
+    if( NULL == pv1     ||
+        NULL == pv2     ||
+        SUCCESS == pcompare(pv1->data, pv2->data))
+    {
+        return(FAILURE);
+    }
+    //printf("1\n");
+    
+    p_edge_t pe1 = locate_edge(pv1, v2, pcompare);
+    p_edge_t pe2 = locate_edge(pv2, v1, pcompare);
+
+    //printf("2\n");
+
+    if( NULL == locate_edge(pv1, v2, pcompare)   ||
+        NULL == locate_edge(pv2, v1, pcompare))
+        return(FAILURE);
+
+    list_remove(pe1->vertex->edges, pe2, compare_edges);
+    //printf("\n2.5\n");
+    list_remove(pe2->vertex->edges, pe1, compare_edges);
+
+    //printf("3\n");
+
+    return(SUCCESS);
+}
+
+/**
+ * @brief Removing edge from directed graph
+ * 
+ * @param graph Graph to remove edge from
+ * @param v1 Vertex1 of the edge
+ * @param v2 Vertex2 of the edge
+ * @param pcompare Callback function to compare data 
+ * @return status_t returning status of removing edge
+ */
+static  status_t        graph_remove_directed_edge( graph_t graph,
+                                                    graph_data_t v1,
+                                                    graph_data_t v2,
+                                                    COMPARE_PROC pcompare)
+{
+    //  Code
+    
+    p_vertex_t pv1 = locate_vertex(graph, v1, pcompare);
+    p_vertex_t pv2 = locate_vertex(graph, v2, pcompare);
+
+    if( NULL == pv1     ||
+        NULL == pv2     ||
+        SUCCESS == pcompare(pv1->data, pv2->data))
+    {
+        return(FAILURE);
+    }
+    
+    p_edge_t pe1 = locate_edge(pv1, v2, pcompare);
+    p_edge_t pe2 = locate_edge(pv2, v1, pcompare);
+
+    if( NULL == locate_edge(pv1, v2, pcompare)   ||
+        NULL == locate_edge(pv2, v1, pcompare))
+        return(FAILURE);
+
+    list_remove(pe1->vertex->edges, pe2, compare_edges);
+    
+    return(SUCCESS);
+}
+
+/**
+ * @brief Destroy set data
+ * 
+ * @param data data stored in list
+ */
+static  void        destroy_set_data( dcll_data_t data)
+{
+    set_t s = (set_t) data;
+    set_destroy(&s, NULL);
+}
+
+/**
+ * @brief Comparing MST nodes
+ * 
+ * @param d1 data1 of list
+ * @param d2 data2 of list
+ * @return status_t returning the status of comparison
+ */
+static  status_t    compare_mst_node(dcll_data_t d1, dcll_data_t d2)
+{
+    //  Code
+    //printf("9 = %zd = %zd\n", ((p_mst_node_t)d1)->weight, ((p_mst_node_t)d2)->weight );
+    if( ((p_mst_node_t)d1)->weight < ((p_mst_node_t)d2)->weight )
+        return(SUCCESS);
+    
+    return(FAILURE);
+}
+
+/**
+ * @brief Deleting data of MST node
+ * 
+ * @param d data to delete
+ */
+static  void    delete_mst_node(dcll_data_t d)
+{
+    //printf("\ndeleting = %zd = %zd = %d\n", ((p_mst_node_t)d)->v1->data, ((p_mst_node_t)d)->v1->data, ((p_mst_node_t)d)->weight );
+    free(d);
+}
+
+/**
+ * @brief Formulate set from the edges of graph
+ * 
+ * @param graph Graph to from set
+ * @param plist pointer to list to create sorted edges
+ * @param pshowdata callback function to show data
+ */
+static  void    graph_formulate_set(    graph_t graph,
+                                        list_t edge_list,
+                                        list_t* plist, 
+                                        list_t* p_mst_list,
+                                        COMPARE_PROC pcompare,
+                                        SHOWDATA_PROC pshowdata)
+{
+    //  Code
+    //list_t list = NULL;
+    p_graph_dummy_t pg = (p_graph_dummy_t)graph;
+    if( NULL == pg  ||
+        NULL == pg->vertices )
+        return;
+    
+    *plist = create_list();
+    for( int i = 0; i < list_size(pg->vertices); ++i )
+    {
+        list_insert_back(*plist, make_set( list_at(pg->vertices, i) ) );
+    }
+
+    // for( int i = 0; i < list_size( list ); ++i )
+    // {
+    //     printf("\nSet%d:\n", i+1);
+    //     set_t s = list_at(list, i);
+    //     for( int j = 0; j < set_size( s ); ++j )
+    //     {
+    //         printf("->");
+    //         pshowdata( ((p_vertex_t)set_at(s, j))->data );
+    //     }
+    // }
+
+    for( int j = 0; j < list_size( edge_list); ++j )
+    {
+        p_mst_node_t pmst = (p_mst_node_t) list_at(edge_list, j);
+        set_t s1 = NULL;
+        set_t s2 = NULL;
+
+        //printf("\npv->data = %zd\n", pv->data);
+        //printf("pe->vectex->data = %zd\n\n", pe->vertex->data);
+
+        for( int k = 0; k < list_size( *plist ); ++k )
+        {
+            if( NULL != set_find( list_at(*plist, k), pmst->v1, compare ) )
+            {
+                //printf("1\n");
+                s1 = list_at(*plist, k);
+            }
+
+            if( NULL != set_find( list_at(*plist, k), pmst->v2, compare ) )
+            {
+                //printf("2\n");
+                s2 = list_at(*plist, k);
+            }
+
+            if( NULL != s1 && NULL != s2 )
+                break;
+        }
+        
+        
+        if( s1 != s2 )
+        {
+            list_remove( *plist, s2, compare);
+            set_union( s1, &s2 );
+            list_insert_back( *p_mst_list, pmst );
+        }
+    }
+
+    //g_compare = pcompare;
+}
+
+/*********************************************************\
+ * 
+ *   Graph Interface Functions
+ * 
+\*********************************************************/
 
 /**
  * @brief Create a graph object
@@ -213,14 +522,14 @@ extern  status_t    graph_add_vertex(graph_t graph, graph_data_t data)
 }
 
 /**
- * @brief Adding a new edge to the graph
+ * @brief Add edge to graph
  * 
- * @param graph Graph to add edge to
- * @param v1 Vertex1 of the edge
- * @param v2 Vertex2 of the edge
- * @param weight weight of the edge between v1 and v2
- * @param pcompare Callback function to compare data
- * @return status_t returning status of instertion of the edge
+ * @param graph to add edge
+ * @param v1 v1 of the edge
+ * @param v2 v2 of the edge
+ * @param weight weight of the edge
+ * @param pcompare callback function to compare
+ * @return status_t returning status of addition of edge
  */
 extern  status_t    graph_add_edge( graph_t  graph, 
                                     graph_data_t v1, 
@@ -231,73 +540,15 @@ extern  status_t    graph_add_edge( graph_t  graph,
     //  Code
     p_graph_dummy_t pd = (p_graph_dummy_t) graph;
     if( NULL == pd  ||
-        0 == pd->nr_elements ||
-        GRAPH_DIRECTED == pd->graph_type)
+        0 == pd->nr_elements)
     {
         return(FAILURE);
     }
 
-    p_vertex_t pv1 = locate_vertex(graph, v1, pcompare);
-    p_vertex_t pv2 = locate_vertex(graph, v2, pcompare);
-
-    if( NULL == pv1     ||
-        NULL == pv2     ||
-        SUCCESS == pcompare(pv1->data, pv2->data))
-    {
-        return(FAILURE);
-    }
-    
-    if( NULL != locate_edge(pv1, v2, pcompare)   ||
-        NULL != locate_edge(pv2, v1, pcompare))
-        return(FAILURE);
-    
-    list_insert_back(pv1->edges, create_edge(pv2, weight));
-    list_insert_back(pv2->edges, create_edge(pv1, weight));
-
-    return(SUCCESS);
-}
-
-/**
- * @brief Adding a directed edge to the graph
- * 
- * @param graph The graph to add edge to
- * @param v1 Vertex1 of the edge
- * @param v2 vertex2 of the edge
- * @param weight weight of the edge between v1 and v2
- * @param pcompare callback function to compare data
- * @return status_t returning status of insertion of edge
- */
-extern  status_t    graph_add_directed_edge(graph_t graph,
-                                            graph_data_t v1,
-                                            graph_data_t v2,
-                                            size_t weight,
-                                            COMPARE_PROC pcompare)
-{
-    //  Code
-    p_graph_dummy_t pd = (p_graph_dummy_t)graph;
-    if( NULL == pd  ||
-        0 == pd->nr_elements ||
-        GRAPH_UNDIRECTED == pd->graph_type)
-    {
-        return(FAILURE);  
-    }
-
-    p_vertex_t pv1 = locate_vertex(graph, v1, pcompare);
-    p_vertex_t pv2 = locate_vertex(graph, v2, pcompare);
-
-    if( NULL == pv1 ||
-        NULL == pv2 )
-    {
-        return(FAILURE);
-    }
-
-    if( NULL != locate_edge(pv1, v2, pcompare)   ||
-        NULL != locate_edge(pv2, v1, pcompare))
-    {
-        return(FAILURE);
-    }
-    
-    return(list_insert_back( pv1->edges, create_edge(pv2, weight) ) );
+    if( GRAPH_DIRECTED == pd->graph_type)
+        return(graph_add_directed_edge(graph, v1, v2, weight, pcompare));
+    else 
+        return(graph_add_undirected_edge(graph, v1, v2, weight, pcompare));
 }
 
 /**
@@ -342,110 +593,41 @@ extern  graph_data_t    graph_remove_vertex(graph_t graph,
             list_destroy( &(pv->edges), NULL);
             ret_data = pv->data;
             list_remove(pd->vertices, pv, compare);
+            --i;
         }
     }    
 
     return(ret_data);
 }
-
+ 
 /**
- * @brief Removing edge from graph
+ * @brief Remove edge (Directed/Undirect) from graph
  * 
- * @param graph Graph to remove edge from
- * @param v1 Vertex1 of the edge
- * @param v2 Vertex2 of the edge
- * @param pcompare Callback function to compare data 
+ * @param graph to remove edge from
+ * @param v1 of the edge 
+ * @param v2 of the edge
+ * @param pcompare callback function for data coparison
  * @return status_t returning status of removing edge
  */
-extern  status_t        graph_remove_edge(  graph_t graph,
-                                            graph_data_t v1,
-                                            graph_data_t v2,
-                                            COMPARE_PROC pcompare)
+extern  status_t    graph_remove_edge(  graph_t graph,
+                                        graph_data_t v1,
+                                        graph_data_t v2,
+                                        COMPARE_PROC pcompare)
 {
     //  Code
     p_graph_dummy_t pd = (p_graph_dummy_t) graph;
     if( NULL == pd  ||
-        0 == pd->nr_elements ||
-        GRAPH_DIRECTED == pd->graph_type)
+        0 == pd->nr_elements )
     {
         return(FAILURE);
     }
 
-    p_vertex_t pv1 = locate_vertex(graph, v1, pcompare);
-    p_vertex_t pv2 = locate_vertex(graph, v2, pcompare);
-    //printf("0\n");
-
-    if( NULL == pv1     ||
-        NULL == pv2     ||
-        SUCCESS == pcompare(pv1->data, pv2->data))
-    {
-        return(FAILURE);
-    }
-    //printf("1\n");
-    
-    p_edge_t pe1 = locate_edge(pv1, v2, pcompare);
-    p_edge_t pe2 = locate_edge(pv2, v1, pcompare);
-
-    //printf("2\n");
-
-    if( NULL == locate_edge(pv1, v2, pcompare)   ||
-        NULL == locate_edge(pv2, v1, pcompare))
-        return(FAILURE);
-
-    list_remove(pe1->vertex->edges, pe2, compare_edges);
-    //printf("\n2.5\n");
-    list_remove(pe2->vertex->edges, pe1, compare_edges);
-
-    //printf("3\n");
-
-    return(SUCCESS);
+    if( GRAPH_DIRECTED == pd->graph_type)
+        return(graph_remove_directed_edge( graph, v1, v2, pcompare ));
+    else
+        return(graph_remove_undirected_edge( graph, v1, v2, pcompare));
 }
-
-/**
- * @brief Removing edge from directed graph
- * 
- * @param graph Graph to remove edge from
- * @param v1 Vertex1 of the edge
- * @param v2 Vertex2 of the edge
- * @param pcompare Callback function to compare data 
- * @return status_t returning status of removing edge
- */
-extern  status_t        graph_remove_directed_edge( graph_t graph,
-                                                    graph_data_t v1,
-                                                    graph_data_t v2,
-                                                    COMPARE_PROC pcompare)
-{
-    //  Code
-    p_graph_dummy_t pd = (p_graph_dummy_t) graph;
-    if( NULL == pd  ||
-        0 == pd->nr_elements ||
-        GRAPH_UNDIRECTED == pd->graph_type)
-    {
-        return(FAILURE);
-    }
-
-    p_vertex_t pv1 = locate_vertex(graph, v1, pcompare);
-    p_vertex_t pv2 = locate_vertex(graph, v2, pcompare);
-
-    if( NULL == pv1     ||
-        NULL == pv2     ||
-        SUCCESS == pcompare(pv1->data, pv2->data))
-    {
-        return(FAILURE);
-    }
-    
-    p_edge_t pe1 = locate_edge(pv1, v2, pcompare);
-    p_edge_t pe2 = locate_edge(pv2, v1, pcompare);
-
-    if( NULL == locate_edge(pv1, v2, pcompare)   ||
-        NULL == locate_edge(pv2, v1, pcompare))
-        return(FAILURE);
-
-    list_remove(pe1->vertex->edges, pe2, compare_edges);
-    
-    return(SUCCESS);
-}
-                                            
+                                           
 
 /**
  * @brief Show Graph complete data
@@ -732,3 +914,137 @@ extern  void    graph_deapth_first_search_all_vertices( graph_t graph,
                                     pshowdata);
     } 
 }
+
+extern  void    graph_dijkstras_shortest_path(  graph_t graph,
+                                                SHOWDATA_PROC pshowdata)
+{
+
+}
+
+extern  void    graph_bellmann_ford(graph_t graph,
+                                    SHOWDATA_PROC pshowdata)
+{
+    
+}
+extern  void    graph_floyd_warshall(   graph_t graph,
+                                        SHOWDATA_PROC pshowdata)
+{
+    
+}
+extern  void    graph_prims_algorithm(  graph_t graph,
+                                        SHOWDATA_PROC pshowdata)
+{
+    
+}
+
+/**
+ * @brief Kruskal Algorithm for Minimum Spanning Tree
+ * 
+ * @param graph to build the minimum spanning tree
+ * @param pshowdata callback to show data
+ */
+extern  void    graph_kruskals_algorithm(   graph_t graph,
+                                            COMPARE_PROC pcompare,
+                                            SHOWDATA_PROC pshowdata)
+{
+    //  Code
+    p_graph_dummy_t pg = (p_graph_dummy_t)graph;
+    if( NULL == pg  ||
+        NULL == pg->vertices )
+    {
+        return;
+    }
+
+    list_t list = create_list();
+    set_t set_list = create_list();
+    list_t mst = create_list();
+
+    for( int i = 0 ; i < list_size(pg->vertices); ++i )
+    {
+        p_vertex_t pv = (p_vertex_t) list_at(pg->vertices, i);
+
+        for( int j = 0; j < list_size(pv->edges); ++j)
+        {
+            p_edge_t pe = (p_edge_t)list_at(pv->edges, j);
+            
+            list_insert_back(list, create_mst_node(pv, pe->vertex, pe->weight) );
+        }
+    }
+
+    // for( int i = 0; i < list_size(list); ++i )
+    // {
+    //     p_mst_node_t pm = (p_mst_node_t)list_at(list, i);
+
+    //     printf("-->");
+    //     pshowdata(pm->v1->data);
+    //     printf(" \t ");
+    //     pshowdata(pm->v1->data);
+    //     printf(" \t %zd\n", pm->weight);
+    //     //free(pm);
+    // }
+
+    list_sort( list, compare_mst_node);
+
+    // printf("Sorted Edge list\n");
+    // for( int i = 0; i < list_size(list); ++i )
+    // {
+    //     p_mst_node_t pm = (p_mst_node_t)list_at(list, i);
+
+    //     printf("-->");
+    //     pshowdata(pm->v1->data);
+    //     printf(" \t ");
+    //     pshowdata(pm->v2->data);
+    //     printf(" \t %zd\n", pm->weight);
+    //     //free(pm);
+    // }  
+    
+    graph_formulate_set( graph, list, &set_list, &mst, pcompare, pshowdata);
+
+    for( int i = 0; i < list_size( set_list ); ++i )
+    {
+        printf("\nSet %d:\n", i+1);
+        set_t s = list_at(set_list, i);
+        //list_sort(s, compare_vertex);
+        for( int j = 0; j < set_size( s ); ++j )
+        {
+            printf("->");
+            pshowdata( ((p_vertex_t)set_at(s, j))->data );
+        }
+        printf("\n");
+    }
+
+    long total_cost = 0;
+    printf("\nMinimum Spanning Tree:\n");
+    printf("Src\tDest\tWeight");
+    for( int i = 0; i < list_size( mst ); ++i )
+    {
+        p_mst_node_t pmst = list_at(mst, i);
+        
+        printf("\n");
+        pshowdata( pmst->v1->data );
+        printf("\t");
+        pshowdata( pmst->v2->data );
+        printf("\t");
+        printf(" %zd ", pmst->weight );
+
+        total_cost += pmst->weight;
+    }
+
+    printf("\nTotal Cost of Minimum Spanning Tree = %zd\n", total_cost);
+
+
+    list_destroy(&set_list, delete_mst_node);
+    set_list = NULL;
+    
+    list_destroy(&mst, NULL);
+    mst = NULL;
+
+    list_destroy(&list, delete_mst_node);
+}
+extern  void    graph_ford_fulkerson(   graph_t graph,
+                                        SHOWDATA_PROC pshowdata)
+{
+    
+}
+
+

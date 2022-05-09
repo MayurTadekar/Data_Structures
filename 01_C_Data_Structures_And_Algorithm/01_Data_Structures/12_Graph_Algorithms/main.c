@@ -33,6 +33,14 @@ void    deletedata(graph_data_t data)
     printf("delete = %d\n",(long long)data);
 }
 
+status_t compare_in(graph_data_t d1, graph_data_t d2)
+{
+    if( (size_t)d1 < (size_t)d2 )
+        return(SUCCESS);
+    
+    return(FAILURE);
+}
+
 // void    PrintList(list_t list)
 // {
 //     printf("List:\n");
@@ -50,65 +58,69 @@ dcll_status_t compare(dcll_data_t d1, dcll_data_t d2)
     return(FAILURE);
 }
 
-int main(void)
+int toValue(char* str)
 {
-    // list = create_list();
-    
-    // list_insert(list, (dcll_data_t)10);
-    // list_insert(list, (dcll_data_t)20);
-    // list_insert(list, (dcll_data_t)30);
-    // list_insert(list, (dcll_data_t)40);
-    // list_insert(list, (dcll_data_t)50);
-    // list_insert(list, (dcll_data_t)60);
-    // list_insert(list, (dcll_data_t)70);
-    // list_insert(list, (dcll_data_t)80);
-    // list_insert(list, (dcll_data_t)90);
-    // list_insert(list, (dcll_data_t)100);
-    
-    // PrintList(list);
+    //  Code
+    int value = 0;
+    int index = 0;
+    while( '\0' != str[index] )
+    {
+        if( '0' <= str[index] && '9' >= str[index] )
+            value = (value * 10) + ( str[index] - '0' );
+        else
+        {
+            return(-1);
+        }
+        ++index;
+    }
 
-    // for( int i = 0 ; i < list_size(list); ++i )
-    // {
-    //     printf(" %d => %d\n", i, (long long)list_at(list, i));
-    // }
+    return(value);
+}
 
-    // list_remove(list, (dcll_data_t)10, compare);
-    // list_remove(list, (dcll_data_t)50, compare);
-    // list_remove(list, (dcll_data_t)90, compare);
-    // PrintList(list);
+int main(int argc, char **argv)
+{
 
-    // for( int i = 0 ; i < list_size(list); ++i )
-    // {
-    //     printf(" %d => %d\n", i, (long long)list_at(list, i));
-    // }
+    if( argc < 3 )
+    {
+        fprintf(stderr, "ERROR: please enter EXE_NAME <NO_OF_VERTICES> <NO_OF_EDGES>\n");
+        exit(1);
+    }
 
-    // list_destroy(&list, deletedata);
-    
-    // PrintList(list);
-    
     graph = create_graph(GRAPH_UNDIRECTED);
-
     srand(time(0));
-    // size_t size = rand() % 10 + 1;
-    // for( size_t i = 0; i < size; ++i )
-    //     graph_add_vertex(graph, (graph_data_t)(size_t)( rand() % 100 + 1 ) );
+    long nr_elements = toValue(argv[1]);
+    if( -1 == nr_elements )
+    {
+        fprintf(stderr, "ERROR: Invalid Input\n");
+        exit(1);
+    }
+    
+    for( size_t i = 0; i < nr_elements; ++i )
+        graph_add_vertex(graph, (graph_data_t)(size_t)( i + 1 ) );
 
-    graph_add_vertex(graph, (graph_data_t)(size_t)( 10 ) );
-    graph_add_vertex(graph, (graph_data_t)(size_t)( 20 ) );
-    graph_add_vertex(graph, (graph_data_t)(size_t)( 30 ) );
-    graph_add_vertex(graph, (graph_data_t)(size_t)( 40 ) );
-    graph_add_vertex(graph, (graph_data_t)(size_t)( 50 ) );
-    graph_add_vertex(graph, (graph_data_t)(size_t)( 60 ) );
-    graph_add_vertex(graph, (graph_data_t)(size_t)( 70 ) );
-    graph_add_vertex(graph, (graph_data_t)(size_t)( 80 ) );
-    graph_add_vertex(graph, (graph_data_t)(size_t)( 90 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 10 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 20 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 30 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 40 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 50 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 60 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 70 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 80 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 90 ) );
+    // graph_add_vertex(graph, (graph_data_t)(size_t)( 100 ) );
 
     
-    size_t size = rand() % 1000 + 1;
-    for( size_t i = 0; i < size; ++i )
+    //size = rand() % 1000 + 1;
+    long nr_edges = toValue(argv[2]);
+    if( -1 == nr_edges )
+    {
+        fprintf(stderr, "ERROR: Invalid Input\n");
+        exit(1);
+    }
+    for( size_t i = 0; i < nr_edges; ++i )
         graph_add_edge( graph,
-                        (graph_data_t)(size_t)(( rand() % 10 + 1 ) * 10),
-                        (graph_data_t)(size_t)(( rand() % 10 + 1 ) * 10),
+                        (graph_data_t)(size_t)( rand() % nr_elements + 1 ),
+                        (graph_data_t)(size_t)( rand() % nr_elements + 1 ),
                         ( rand() % 100 + i ),
                         compare);
 
@@ -132,7 +144,8 @@ int main(void)
     NEW_LINE;
     graph_show(graph, showdata, showedge);
     NEW_LINE;
-    NEW_LINE;
+    
+    /*NEW_LINE;
 
     printf("Breadth First Search Single Source:\n");
     graph_breadth_first_search( graph,
@@ -161,6 +174,12 @@ int main(void)
                                             compare,
                                             showdata);
     NEW_LINE;
+
+    graph_formulate_set(graph, showdata);*/
+    NEW_LINE;
+
+    graph_kruskals_algorithm(graph, compare_in, showdata);
+
     // graph_remove_edge(graph, (graph_data_t)(size_t)10, (graph_data_t)(size_t)20, compare);
 
     // NEW_LINE;
