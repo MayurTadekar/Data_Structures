@@ -199,6 +199,13 @@ static p_dnode locatenode(PDList list, data_t e_data, COMPAREPROC pcompareproc)
 
 /****************	Interface Function Definitions	****************/
 
+/**
+ * Function: Creates a new doubly linked list and initializes it with a dummy node.
+ * 
+ * identifier: createlist
+ * params: void (No parameters)
+ * returns: PDList Returns a pointer to the newly created doubly linked list. Returns NULL if memory allocation fails.
+ */
 //	DCLL Interface function declarations
 extern	PDList 	createlist(void)
 {
@@ -218,7 +225,13 @@ extern	PDList 	createlist(void)
 	return(list);
 }
 
-//	Interface Functions to insert data in list
+/**
+ * Function: Inserts data at the front of a doubly linked list.
+ * 
+ * identifier: dcll_insertfront
+ * params: PDList list - Pointer to the doubly linked list, data_t data - Data to be inserted.
+ * returns: ret_t Returns SUCCESS upon successful insertion. Returns FAILURE if the list is not found or if memory allocation fails.
+ */
 extern	ret_t	dcll_insertfront(PDList list, data_t data)
 {
 	// Code
@@ -230,6 +243,13 @@ extern	ret_t	dcll_insertfront(PDList list, data_t data)
 	return(genericinsert(list, list->head, node, list->head->next));
 }
 
+/**
+ * Function: Inserts data at the back of a doubly linked list.
+ * 
+ * identifier: dcll_insertback
+ * params: PDList list - Pointer to the doubly linked list, data_t data - Data to be inserted.
+ * returns: ret_t Returns SUCCESS upon successful insertion. Returns FAILURE if the list is not found or if memory allocation fails.
+ */
 extern	ret_t	dcll_insertback(PDList list, data_t data)
 {
 	// Code
@@ -242,6 +262,13 @@ extern	ret_t	dcll_insertback(PDList list, data_t data)
 
 }	
 
+/**
+ * Function: Inserts data at the specified index in a doubly linked list.
+ * 
+ * identifier: dcll_insertat
+ * params: PDList list - Pointer to the doubly linked list, data_t data - Data to be inserted, long long index - Index at which the data is to be inserted.
+ * returns: ret_t Returns SUCCESS upon successful insertion. Returns FAILURE if the list is not found, if the list is empty, or if the index is out of bounds.
+ */
 extern 	ret_t	dcll_insertat(PDList list, data_t data, long long index)
 {
 	// Code
@@ -265,6 +292,13 @@ extern 	ret_t	dcll_insertat(PDList list, data_t data, long long index)
 	return(genericinsert(list, runner, node, runner->next));
 }
 
+/**
+ * Function: Inserts data after a specific element in a doubly linked list.
+ * 
+ * identifier: dcll_insertafter
+ * params: PDList list - Pointer to the doubly linked list, data_t data - Data to be inserted, data_t e_data - Element after which the data is to be inserted, COMPAREPROC pcompareproc - Pointer to the comparison function.
+ * returns: ret_t Returns SUCCESS upon successful insertion. Returns FAILURE if the list is not found, if the list is empty, or if the element after which the data is to be inserted is not found.
+ */
 extern 	ret_t	dcll_insertafter(PDList list, data_t data, data_t e_data, COMPAREPROC pcompareproc)
 {
 	// Code
@@ -280,6 +314,13 @@ extern 	ret_t	dcll_insertafter(PDList list, data_t data, data_t e_data, COMPAREP
 	return(genericinsert(list, enode, node, enode->next));
 }
 
+/**
+ * Function: Inserts data before a specific element in a doubly linked list.
+ * 
+ * identifier: dcll_insertbefore
+ * params: PDList list - Pointer to the doubly linked list, data_t data - Data to be inserted, data_t e_data - Element before which the data is to be inserted, COMPAREPROC pcompareproc - Pointer to the comparison function.
+ * returns: ret_t Returns SUCCESS upon successful insertion. Returns FAILURE if the list is not found, if the list is empty, or if the element before which the data is to be inserted is not found.
+ */
 extern	ret_t	dcll_insertbefore(PDList list, data_t data, data_t e_data, COMPAREPROC pcompareproc)
 {
 	// Code
@@ -295,7 +336,13 @@ extern	ret_t	dcll_insertbefore(PDList list, data_t data, data_t e_data, COMPAREP
 	return(genericinsert(list, enode->prev, node, enode));
 }
 
-// 	Interface Functions to remove data from list
+/**
+ * Function: Removes data from the front of a doubly linked list.
+ * 
+ * identifier: dcll_removefront
+ * params: PDList list - Pointer to the doubly linked list.
+ * returns: data_t Returns the removed data. Returns NULL if the list is not found or if the list is empty.
+ */
 extern	data_t	dcll_removefront(PDList list)
 {
 	// Code
@@ -304,6 +351,13 @@ extern	data_t	dcll_removefront(PDList list)
 	return(genericremove(list, list->head->next));
 }
 
+/**
+ * Function: Removes data from the back of a doubly linked list.
+ * 
+ * identifier: dcll_removeback
+ * params: PDList list - Pointer to the doubly linked list.
+ * returns: data_t Returns the removed data. Returns NULL if the list is not found or if the list is empty.
+ */
 extern	data_t	dcll_removeback(PDList list)
 {
 	// Code
@@ -312,6 +366,13 @@ extern	data_t	dcll_removeback(PDList list)
 	return(genericremove(list, list->head->prev));
 }
 
+/**
+ * Function: Removes data at the specified index from a doubly linked list.
+ * 
+ * identifier: dcll_removeat
+ * params: PDList list - Pointer to the doubly linked list, long long index - Index of the data to be removed.
+ * returns: data_t Returns the removed data. Returns NULL if the list is not found, if the list is empty, or if the index is out of bounds.
+ */
 extern	data_t	dcll_removeat(PDList list, long long index)
 {
 	// Code
@@ -332,6 +393,13 @@ extern	data_t	dcll_removeat(PDList list, long long index)
 	return(genericremove(list, runner));
 }
 
+/**
+ * Function: Removes data after a specific element from a doubly linked list.
+ * 
+ * identifier: dcll_removeafter
+ * params: PDList list - Pointer to the doubly linked list, data_t e_data - Element after which the data is to be removed, COMPAREPROC pcompareproc - Pointer to the comparison function.
+ * returns: data_t Returns the removed data. Returns NULL if the list is not found, if the list is empty, or if the element after which the data is to be removed is not found.
+ */
 extern	data_t 	dcll_removeafter(PDList list, data_t e_data, COMPAREPROC pcompareproc)
 {
 	// Code
@@ -344,6 +412,13 @@ extern	data_t 	dcll_removeafter(PDList list, data_t e_data, COMPAREPROC pcompare
 	return(genericremove(list, enode->next));
 }
 
+/**
+ * Function: Removes data before a specific element from a doubly linked list.
+ * 
+ * identifier: dcll_removebefore
+ * params: PDList list - Pointer to the doubly linked list, data_t e_data - Element before which the data is to be removed, COMPAREPROC pcompareproc - Pointer to the comparison function.
+ * returns: data_t Returns the removed data. Returns NULL if the list is not found, if the list is empty, or if the element before which the data is to be removed is not found.
+ */
 extern	data_t	dcll_removebefore(PDList list, data_t e_data, COMPAREPROC pcompareproc)
 {
 	// Code
@@ -356,7 +431,13 @@ extern	data_t	dcll_removebefore(PDList list, data_t e_data, COMPAREPROC pcompare
 	return(genericremove(list, enode->prev));	
 }
 
-//	Interface functions for operations of List
+/**
+ * Function: Searches for a specific data in a doubly linked list.
+ * 
+ * identifier: dcll_search
+ * params: PDList list - Pointer to the doubly linked list, data_t s_data - Data to search for, COMPAREPROC pcompareproc - Pointer to the comparison function.
+ * returns: data_t Returns the found data. Returns NULL if the list is not found, if the list is empty, or if the data is not found.
+ */
 extern	data_t	dcll_search(PDList list, data_t s_data, COMPAREPROC pcompareproc)
 {
 	// Code
@@ -369,6 +450,13 @@ extern	data_t	dcll_search(PDList list, data_t s_data, COMPAREPROC pcompareproc)
 	return(enode->data);
 }
 
+/**
+ * Function: Retrieves data at the specified index from a doubly linked list.
+ * 
+ * identifier: dcll_dataat
+ * params: PDList list - Pointer to the doubly linked list, long long index - Index of the data to retrieve.
+ * returns: data_t Returns the retrieved data. Returns NULL if the list is not found, if the list is empty, or if the index is out of bounds.
+ */
 extern	data_t	dcll_dataat(PDList list, long long index)
 {
 	// Code
@@ -383,6 +471,13 @@ extern	data_t	dcll_dataat(PDList list, long long index)
 	return(runner->data);
 }
 
+/**
+ * Function: Returns the number of elements in a doubly linked list.
+ * 
+ * identifier: dcll_size
+ * params: PDList list - Pointer to the doubly linked list.
+ * returns: size_t Returns the number of elements in the list. Returns 0 if the list is not found or if the list is empty.
+ */
 extern	size_t	dcll_size(PDList list)
 {
 	// Code
@@ -391,6 +486,13 @@ extern	size_t	dcll_size(PDList list)
 	return(list->nrelements);
 }
 
+/**
+ * Function: Retrieves the error description for the last operation performed on a doubly linked list.
+ * 
+ * identifier: dcll_geterrordescription
+ * params: None
+ * returns: int Returns an error code describing the last operation. Prints the error description to stdout.
+ */
 extern	int 	dcll_geterrordescription()
 {
 	// Code
@@ -424,8 +526,13 @@ extern	int 	dcll_geterrordescription()
 	d_errorcode = E_NONE;
 }
 
-
-//	Interface function to destroy list
+/**
+ * Function: Destroys a doubly linked list and frees its memory.
+ * 
+ * identifier: dcll_destroy
+ * params: PPDList plist - Pointer to the pointer to the doubly linked list, DELETEDATAPROC pdeletedataproc - Pointer to the function used to delete the data.
+ * returns: ret_t Returns SUCCESS upon successful destruction. Returns FAILURE if the list is not found.
+ */
 extern	ret_t	dcll_destroy(PPDList plist, DELETEDATAPROC pdeletedataproc)
 {
 	// Code

@@ -15,6 +15,15 @@
 // Global Data Definitions
 DCLL<long long>* list = nullptr;
 
+/**
+ * Function: Entry point function for the program.
+ * 
+ * Description: Initializes a Doubly Linked List (DCLL) object, inserts elements at various positions, removes elements, and prints the list after each operation.
+ * 
+ * @param argc Number of command-line arguments.
+ * @param argv Array of command-line arguments.
+ * @return int Returns SUCCESS upon successful execution.
+ */
 int main(int argc, char** argv)
 {
 	//	Code

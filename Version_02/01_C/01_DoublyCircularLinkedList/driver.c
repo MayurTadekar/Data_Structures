@@ -16,7 +16,13 @@
 // Global Data Definition
 List list = NULL;
 
-// Function to print list
+/**
+ * Function: Prints the elements of a doubly linked list.
+ * 
+ * identifier: printlist
+ * params: List list - Doubly linked list to be printed.
+ * returns: void No return value.
+ */
 void printlist(List list)
 {
 	// Code
@@ -30,6 +36,13 @@ void printlist(List list)
 	printf("\n");
 }
 
+/**
+ * Function: Compares two data elements.
+ * 
+ * identifier: compare
+ * params: data_t data1 - First data element, data_t data2 - Second data element.
+ * returns: ret_t Returns SUCCESS if the two data elements are equal. Returns FAILURE otherwise.
+ */
 ret_t compare(data_t data1, data_t data2)
 {
 	// Code
@@ -39,7 +52,13 @@ ret_t compare(data_t data1, data_t data2)
 	return(FAILURE);
 }
 
-// Entry Point Function
+/**
+ * Function: Entry point function.
+ * 
+ * identifier: main
+ * params: int argc - Number of command-line arguments, char** argv - Array of command-line arguments.
+ * returns: int Returns 0 upon successful execution.
+ */
 int main(int argc, char** argv)
 {
 	// Code
