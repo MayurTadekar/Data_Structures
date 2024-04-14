@@ -1,0 +1,60 @@
+
+{
+	DIR : 01_Vector
+	Date : Friday - April 12, 2024 - 12:46:28:277 AM
+}
+
+{
+	DIR : 02_Doubly_Circular_Linked_List
+	Date : Friday - April 12, 2024 - 12:46:28:278 AM
+}
+
+{
+	DIR : 03_Stack
+	Date : Friday - April 12, 2024 - 12:46:28:278 AM
+}
+
+{
+	DIR : 04_Binary_Search_Tree
+	Date : Friday - April 12, 2024 - 12:46:28:280 AM
+}
+
+{
+	DIR : 05_Graph
+	Date : Friday - April 12, 2024 - 12:46:28:281 AM
+}
+
+{
+	DIR : 06_AVL_Tree
+	Date : Friday - April 12, 2024 - 12:46:28:287 AM
+}
+
+{
+	DIR : 07_Heap
+	Date : Friday - April 12, 2024 - 12:46:28:288 AM
+}
+
+{
+	DIR : 08_Red_Black_Tree
+	Date : Friday - April 12, 2024 - 12:46:28:291 AM
+}
+
+{
+	DIR : 09_Splay_Tree
+	Date : Friday - April 12, 2024 - 12:46:28:293 AM
+}
+
+{
+	DIR : 10_B_Tree
+	Date : Friday - April 12, 2024 - 12:46:28:294 AM
+}
+
+{
+	DIR : 11_B+_Tree
+	Date : Friday - April 12, 2024 - 12:46:28:295 AM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Sunday - April 14, 2024 - 9:26:31:883 PM
+}

@@ -1,0 +1,30 @@
+
+{
+	DIR : 01_Insertion_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:269 AM
+}
+
+{
+	DIR : 02_Merge_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:269 AM
+}
+
+{
+	DIR : 03_Heap_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:272 AM
+}
+
+{
+	DIR : 04_Quick_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:274 AM
+}
+
+{
+	DIR : 05_Counting_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:275 AM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Sunday - April 14, 2024 - 9:26:31:861 PM
+}

@@ -1,0 +1,50 @@
+
+{
+	FILE : dcll.c
+	Date : Friday - April 12, 2024 - 12:46:28:249 AM
+}
+
+{
+	FILE : dcll.h
+	Date : Friday - April 12, 2024 - 12:46:28:249 AM
+}
+
+{
+	FILE : dcll.obj
+	Date : Friday - April 12, 2024 - 12:46:28:249 AM
+}
+
+{
+	FILE : heap.c
+	Date : Friday - April 12, 2024 - 12:46:28:249 AM
+}
+
+{
+	FILE : heap.h
+	Date : Friday - April 12, 2024 - 12:46:28:250 AM
+}
+
+{
+	FILE : heap.obj
+	Date : Friday - April 12, 2024 - 12:46:28:250 AM
+}
+
+{
+	FILE : main.c
+	Date : Friday - April 12, 2024 - 12:46:28:250 AM
+}
+
+{
+	FILE : main.exe
+	Date : Friday - April 12, 2024 - 12:46:28:251 AM
+}
+
+{
+	FILE : main.obj
+	Date : Friday - April 12, 2024 - 12:46:28:251 AM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Sunday - April 14, 2024 - 9:26:31:817 PM
+}

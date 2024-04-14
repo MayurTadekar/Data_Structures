@@ -1,0 +1,40 @@
+
+{
+	DIR : 01_Insertion_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:296 AM
+}
+
+{
+	DIR : 02_Merge_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:298 AM
+}
+
+{
+	DIR : 03_Heap_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:301 AM
+}
+
+{
+	DIR : 04_Quick_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:303 AM
+}
+
+{
+	DIR : 05_Counting_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:305 AM
+}
+
+{
+	DIR : 06_Bucket_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:308 AM
+}
+
+{
+	DIR : 07_Selection_Sort
+	Date : Friday - April 12, 2024 - 12:46:28:309 AM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Sunday - April 14, 2024 - 9:26:31:918 PM
+}

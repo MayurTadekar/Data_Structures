@@ -1,0 +1,45 @@
+
+{
+	FILE : a.exe
+	Date : Friday - April 12, 2024 - 12:46:28:259 AM
+}
+
+{
+	FILE : dcll.c
+	Date : Friday - April 12, 2024 - 12:46:28:260 AM
+}
+
+{
+	FILE : dcll.h
+	Date : Friday - April 12, 2024 - 12:46:28:260 AM
+}
+
+{
+	FILE : main.c
+	Date : Friday - April 12, 2024 - 12:46:28:260 AM
+}
+
+{
+	FILE : SplayTree.c
+	Date : Friday - April 12, 2024 - 12:46:28:258 AM
+}
+
+{
+	FILE : SplayTree.h
+	Date : Friday - April 12, 2024 - 12:46:28:258 AM
+}
+
+{
+	FILE : stack.c
+	Date : Friday - April 12, 2024 - 12:46:28:260 AM
+}
+
+{
+	FILE : stack.h
+	Date : Friday - April 12, 2024 - 12:46:28:260 AM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Sunday - April 14, 2024 - 9:26:31:839 PM
+}

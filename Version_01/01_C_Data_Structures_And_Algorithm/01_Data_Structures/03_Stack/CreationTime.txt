@@ -1,0 +1,40 @@
+
+{
+	FILE : a.exe
+	Date : Friday - April 12, 2024 - 12:46:28:244 AM
+}
+
+{
+	FILE : dcll.c
+	Date : Friday - April 12, 2024 - 12:46:28:244 AM
+}
+
+{
+	FILE : dcll.h
+	Date : Friday - April 12, 2024 - 12:46:28:245 AM
+}
+
+{
+	FILE : main.c
+	Date : Friday - April 12, 2024 - 12:46:28:245 AM
+}
+
+{
+	FILE : main_dcll.c
+	Date : Friday - April 12, 2024 - 12:46:28:245 AM
+}
+
+{
+	FILE : stack.c
+	Date : Friday - April 12, 2024 - 12:46:28:245 AM
+}
+
+{
+	FILE : stack.h
+	Date : Friday - April 12, 2024 - 12:46:28:245 AM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Sunday - April 14, 2024 - 9:26:31:803 PM
+}

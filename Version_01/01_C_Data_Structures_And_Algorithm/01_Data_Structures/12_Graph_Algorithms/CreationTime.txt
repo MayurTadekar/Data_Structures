@@ -1,0 +1,65 @@
+
+{
+	FILE : a.exe
+	Date : Friday - April 12, 2024 - 12:46:28:265 AM
+}
+
+{
+	FILE : dcll.c
+	Date : Friday - April 12, 2024 - 12:46:28:265 AM
+}
+
+{
+	FILE : dcll.h
+	Date : Friday - April 12, 2024 - 12:46:28:265 AM
+}
+
+{
+	FILE : disjointset.c
+	Date : Friday - April 12, 2024 - 12:46:28:266 AM
+}
+
+{
+	FILE : disjointset.h
+	Date : Friday - April 12, 2024 - 12:46:28:266 AM
+}
+
+{
+	FILE : graph.c
+	Date : Friday - April 12, 2024 - 12:46:28:266 AM
+}
+
+{
+	FILE : graph.h
+	Date : Friday - April 12, 2024 - 12:46:28:266 AM
+}
+
+{
+	FILE : main.c
+	Date : Friday - April 12, 2024 - 12:46:28:266 AM
+}
+
+{
+	FILE : queue.c
+	Date : Friday - April 12, 2024 - 12:46:28:267 AM
+}
+
+{
+	FILE : queue.h
+	Date : Friday - April 12, 2024 - 12:46:28:267 AM
+}
+
+{
+	FILE : stack.c
+	Date : Friday - April 12, 2024 - 12:46:28:267 AM
+}
+
+{
+	FILE : stack.h
+	Date : Friday - April 12, 2024 - 12:46:28:267 AM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Sunday - April 14, 2024 - 9:26:31:850 PM
+}

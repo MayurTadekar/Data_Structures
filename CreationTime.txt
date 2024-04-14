@@ -1,0 +1,20 @@
+
+{
+	DIR : .git
+	Date : Friday - April 12, 2024 - 12:46:25:999 AM
+}
+
+{
+	DIR : Version_01
+	Date : Friday - April 12, 2024 - 12:48:38:883 AM
+}
+
+{
+	DIR : Version_02
+	Date : Friday - April 12, 2024 - 12:51:8:849 AM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Sunday - April 14, 2024 - 9:26:31:662 PM
+}

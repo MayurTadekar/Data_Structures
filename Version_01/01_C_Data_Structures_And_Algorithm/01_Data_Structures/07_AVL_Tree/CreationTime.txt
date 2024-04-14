@@ -1,0 +1,45 @@
+
+{
+	FILE : a.exe
+	Date : Friday - April 12, 2024 - 12:46:28:254 AM
+}
+
+{
+	FILE : avl.c
+	Date : Friday - April 12, 2024 - 12:46:28:254 AM
+}
+
+{
+	FILE : avl.h
+	Date : Friday - April 12, 2024 - 12:46:28:254 AM
+}
+
+{
+	FILE : client.c
+	Date : Friday - April 12, 2024 - 12:46:28:254 AM
+}
+
+{
+	FILE : dcll.c
+	Date : Friday - April 12, 2024 - 12:46:28:254 AM
+}
+
+{
+	FILE : dcll.h
+	Date : Friday - April 12, 2024 - 12:46:28:256 AM
+}
+
+{
+	FILE : stack.c
+	Date : Friday - April 12, 2024 - 12:46:28:256 AM
+}
+
+{
+	FILE : stack.h
+	Date : Friday - April 12, 2024 - 12:46:28:256 AM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Sunday - April 14, 2024 - 9:26:31:829 PM
+}
