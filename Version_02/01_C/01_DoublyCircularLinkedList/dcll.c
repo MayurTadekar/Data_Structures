@@ -493,7 +493,7 @@ extern	size_t	dcll_size(PDList list)
  * params: None
  * returns: int Returns an error code describing the last operation. Prints the error description to stdout.
  */
-extern	int 	dcll_geterrordescription()
+extern	void 	dcll_geterrordescription()
 {
 	// Code
 	switch(d_errorcode)
@@ -547,6 +547,7 @@ extern	ret_t	dcll_destroy(PPDList plist, DELETEDATAPROC pdeletedataproc)
 
 	p_dnode runner = list->head;
 	runner->prev->next = NULL;	
+	runner = runner->next;
 
 	while(runner->next)
 	{
