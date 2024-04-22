@@ -31,6 +31,9 @@
 template <class T>
 class Queue : protected DCLL<T>
 {
+private:
+	#define	DTHIS (*(DCLL<T>*)this)
+
 public:
 	/**
 	 * Constructor: Queue
@@ -103,6 +106,25 @@ public:
 	{
 		// Code
 		return(RemoveBack());
+	}
+
+
+	T operator[](long long index)
+	{
+		// Code
+		return(DTHIS[index]);
+	}
+
+	bool IsEmpty()
+	{
+		//Code
+		return(DTHIS.IsEmpty());
+	}	
+
+	size_t Size()
+	{
+		// Code
+		return(DTHIS.Size());
 	}
 };
 
