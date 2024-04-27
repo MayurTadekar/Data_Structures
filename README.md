@@ -84,6 +84,10 @@ It is organized into two versions:
    - Implementation: `queue.c`, `queue.h`, `driver.c`
    - Description: Implementation of a queue data structure in C.
 
+4. [**Binary Search Tree**](Version_02/01_C/04_Binary_Search_Tree)
+   - Implementation: `bst.c`, `dcll.h`, `stack.c`, `driver.c`
+   - Description: Implementation of a binary search tree in C.
+
 ### C++
 
 1. [**Doubly Circular Linked List**](Version_02/02_CPP/01_DoublyCircularLinkedList)
