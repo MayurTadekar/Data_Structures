@@ -118,9 +118,29 @@ This repository contains implementations of various data structures and algorith
 
 ## How to Use
 
-Each directory contains its own set of source files. You can compile and run the programs using any C/C++ compiler.
+### For x86 Linux Assembly:
 
+Each assembly directory contains assembly source files and a driver file. You can assemble and run the programs using GNU Assembler (as) and GNU Linker (ld).
+
+To assemble and run assembly programs:
+```bash
+as -o output_file.o source_file.s
+ld -o output_file output_file.o driver.s
+./output_file
+
+### For C:
+
+Each C directory contains C source files and a driver file. You can compile and run the programs using GCC (GNU Compiler Collection).
 To compile and run C programs:
+
 ```bash
 gcc -o output_file source_file.c
+./output_file
+
+### For C++:
+Each C++ directory contains C++ source files and a driver file. You can compile and run the programs using G++ (GNU Compiler Collection).
+
+To compile and run C++ programs:
+```bash
+g++ -o output_file source_file.cpp
 ./output_file
