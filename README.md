@@ -10,45 +10,45 @@ It is organized into two versions
 
 ### Data Structures
 
-1. [**Doubly Circular Linked List**](Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/02_Doubly_Circular_Linked_List/)
+1. [**Doubly Circular Linked List**](Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/02_Doubly_Circular_Linked_List)
    - Implementation: `dcll.c`, `dcll.h`, `main.c`
    - Description: Implementation of a doubly circular linked list.
 
-2. [**Stack**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/03_Stack)
+2. [**Stack**](Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/03_Stack)
    - Implementation: `stack.c`, `stack.h`, `main.c`
    - Description: Implementation of a stack data structure.
 
-3. [**Queue**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/04_Queue)
+3. [**Queue**](Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/04_Queue)
    - Implementation: `queue.c`, `queue.h`, `main.c`
    - Description: Implementation of a queue data structure.
 
-4. [**Binary Search Tree**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/04_Binary_Search_Tree)
+4. [**Binary Search Tree**](Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/04_Binary_Search_Tree)
    - Implementation: `tree.c`, `tree.h`, `main.c`
    - Description: Implementation of a binary search tree.
 
-5. [**Graph**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/05_Graph)
+5. [**Graph**](Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/05_Graph)
    - Implementation: `graph.c`, `graph.h`, `main.c`
    - Description: Implementation of a graph data structure.
 
 ### Sorting Algorithms
 
-1. [**Insertion Sort**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/01_Insertion_Sort)
+1. [**Insertion Sort**](Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/01_Insertion_Sort)
    - Implementation: `insert_sort.c`, `insert_sort.h`, `main.c`
    - Description: Implementation of the insertion sort algorithm.
 
-2. [**Merge Sort**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/02_Merge_Sort)
+2. [**Merge Sort**](Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/02_Merge_Sort)
    - Implementation: `merge_sort.c`, `merge_sort.h`, `main.c`
    - Description: Implementation of the merge sort algorithm.
 
-3. [**Heap Sort**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/03_Heap_Sort)
+3. [**Heap Sort**](Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/03_Heap_Sort)
    - Implementation: `heap_sort.c`, `heap_sort.h`, `main.c`
    - Description: Implementation of the heap sort algorithm.
 
-4. [**Quick Sort**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/04_Quick_Sort)
+4. [**Quick Sort**](Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/04_Quick_Sort)
    - Implementation: `quick_sort.c`, `quick_sort.h`, `main.c`
    - Description: Implementation of the quick sort algorithm.
 
-5. [**Counting Sort**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/05_Counting_Sort)
+5. [**Counting Sort**](Version_01/01_C_Data_Structures_And_Algorithm/02_Sorting/05_Counting_Sort)
    - Implementation: `counting_sort.c`, `counting_sort.h`, `main.c`
    - Description: Implementation of the counting sort algorithm.
 
@@ -56,47 +56,47 @@ It is organized into two versions
 
 ### x86 Linux Assembly
 
-1. [**Doubly Circular Linked List**](Data_Structures/Version_02/00_Assembly/01_DCLL)
+1. [**Doubly Circular Linked List**](Version_02/00_Assembly/01_DCLL)
    - Implementation: `dcll.s`, `driver.s`
    - Description: Implementation of a doubly circular linked list in assembly language.
 
-2. [**Stack**](Data_Structures/Version_02/00_Assembly/02_Stack)
+2. [**Stack**](Version_02/00_Assembly/02_Stack)
    - Implementation: `stack.s`, `driver.s`
    - Description: Implementation of a stack data structure in assembly language.
 
-3. [**Queue**](Data_Structures/Version_02/00_Assembly/03_Queue)
+3. [**Queue**](Version_02/00_Assembly/03_Queue)
    - Implementation: `queue.s`, `driver.s`
    - Description: Implementation of a queue data structure in assembly language.
 
 ### C
 
-1. [**Doubly Circular Linked List**](Data_Structures/Version_02/01_C/01_DoublyCircularLinkedList)
+1. [**Doubly Circular Linked List**](Version_02/01_C/01_DoublyCircularLinkedList)
    - Implementation: `dcll.c`, `dcll.h`, `driver.c`
    - Description: Implementation of a doubly circular linked list in C.
 
-2. [**Stack**](Data_Structures/Version_02/01_C/02_Stack)
+2. [**Stack**](Version_02/01_C/02_Stack)
    - Implementation: `stack.c`, `stack.h`, `driver.c`
    - Description: Implementation of a stack data structure in C.
 
-3. [**Queue**](Data_Structures/Version_02/01_C/03_Queue)
+3. [**Queue**](Version_02/01_C/03_Queue)
    - Implementation: `queue.c`, `queue.h`, `driver.c`
    - Description: Implementation of a queue data structure in C.
 
 ### C++
 
-1. [**Doubly Circular Linked List**](Data_Structures/Version_02/02_CPP/01_DoublyCircularLinkedList)
+1. [**Doubly Circular Linked List**](Version_02/02_CPP/01_DoublyCircularLinkedList)
    - Implementation: `dcll.hpp`, `Driver.cpp`
    - Description: Implementation of a doubly circular linked list in C++.
 
-2. [**Stack**](Data_Structures/Version_02/02_CPP/02_Stack)
+2. [**Stack**](Version_02/02_CPP/02_Stack)
    - Implementation: `stack.hpp`, `driver.cpp`
    - Description: Implementation of a stack data structure in C++.
 
-3. [**Queue**](Data_Structures/Version_02/02_CPP/03_Queue)
+3. [**Queue**](Version_02/02_CPP/03_Queue)
    - Implementation: `queue.hpp`, `Driver.cpp`
    - Description: Implementation of a queue data structure in C++.
 
-4. [**Binary Search Tree**](Data_Structures/Version_02/02_CPP/04_Binary_Search_Tree)
+4. [**Binary Search Tree**](Version_02/02_CPP/04_Binary_Search_Tree)
    - Implementation: `bst.hpp`, `binarytree.hpp`, `tree.hpp`, `DataNotFoundException.hpp`, `TreeEmptyException.hpp`, `Driver.cpp`
    - Description: Implementation of a binary search tree in C++.
 
