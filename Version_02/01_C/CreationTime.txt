@@ -18,3 +18,8 @@
 	DIR : 03_Queue
 	Date : Monday - April 22, 2024 - 11:40:0:399 AM
 }
+
+{
+	DIR : 04_Binary_Search_Tree
+	Date : Saturday - April 27, 2024 - 3:4:23:615 PM
+}
