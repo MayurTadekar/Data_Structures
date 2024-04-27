@@ -5,6 +5,7 @@ This repository contains implementations of various data structures and algorith
 It is organized into two versions:
 
 **Version 01**: This version was created in 2022 which contains the Data Structures and Algorithm in **C and C++**
+
 **Version 02**: The newer version which contains codes in **X86 Linux Assembly, C and C++**. All codes have an updated format and have descriptions for each class & function.
 
 ## Version 01: C and C++ Data Structures
