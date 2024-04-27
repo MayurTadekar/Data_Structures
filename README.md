@@ -63,9 +63,9 @@ It is organized into two versions
    - Files: `counting_sort.c`, `counting_sort.h`, `main.c`
    - Description: Implementation of the counting sort algorithm.
 
-## Version 02: Assembly, C and C++ Data Structures
+## Version 02: x86 Linux Assembly, C and C++ Data Structures
 
-### Assembly
+### x86 Linux Assembly
 
 1. **Doubly Circular Linked List**
    - Implementation: `Data_Structures/Version_02/00_Assembly/01_DCLL`
