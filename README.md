@@ -10,7 +10,7 @@ It is organized into two versions
 
 ### Data Structures
 
-1. [**Doubly Circular Linked List**](Data_Structures/Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/02_Doubly_Circular_Linked_List/)
+1. [**Doubly Circular Linked List**](Version_01/01_C_Data_Structures_And_Algorithm/01_Data_Structures/02_Doubly_Circular_Linked_List/)
    - Implementation: `dcll.c`, `dcll.h`, `main.c`
    - Description: Implementation of a doubly circular linked list.
 
