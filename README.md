@@ -109,7 +109,9 @@ Each assembly directory contains assembly source files and a driver file. You ca
 To assemble and run assembly programs:
 ```bash
 as -o output_file.o source_file.s
+
 ld -o output_file -lc -dynamic-linker /lib/ld-linux.so.2 output_file.o driver.o -e entry_point_function
+
 ./output_file
 ```
 
@@ -120,6 +122,7 @@ To compile and run C programs:
 
 ```bash
 gcc -o output_file source_file.c
+
 ./output_file
 ```
 
@@ -130,5 +133,6 @@ Each C++ directory contains C++ source files and a driver file. You can compile 
 To compile and run C++ programs:
 ```bash
 g++ -o output_file source_file.cpp
+
 ./output_file
 ```
