@@ -70,6 +70,10 @@ It is organized into two versions:
    - Implementation: `queue.s`, `driver.s`
    - Description: Implementation of a queue data structure in assembly language.
 
+4. [**Binary Search Tree**](Version_02/00_Assembly/04_BinarySearchTree)
+   - Implementation: `bst.s`, `dcll.s`, `stack.s`
+   - Description: Implementation of a Binary Search Tree in assembly language.
+
 ### C
 
 1. [**Doubly Circular Linked List**](Version_02/01_C/01_DoublyCircularLinkedList)
