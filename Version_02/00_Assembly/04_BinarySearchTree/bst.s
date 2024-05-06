@@ -50,6 +50,15 @@
 # Section ROData
 .section .rodata
 
+	.msg_p_oom:
+		.string	"ERROR: Out of memory\n"
+
+	.msg_p_dap:
+		.string	"ERROR: Data Already Present\n"
+
+	.msg_p_1:
+		.string	"1\n"
+
 # Section Data
 .section .data
 
@@ -85,7 +94,7 @@ xmalloc:
 
 	movl	-4(%ebp), %eax
 	cmpl	$0, %eax
-	jne	.return_address
+	jne		.return_address
 
 	pushl	$.msg_p_oom
 	pushl	stderr
@@ -245,7 +254,7 @@ minimum:
 	je	.loop_end_min
 
 		movl	8(%ebp), %ebx
-		movl	m_left(%ebx), %eax
+		movl	n_left(%ebx), %eax
 		movl	%eax, 8(%ebp)
 		jmp	.loop_min
 	
@@ -278,7 +287,7 @@ maximum:
 	je	.loop_end_max
 
 		movl	8(%ebp), %ebx
-		movl	m_right(%ebx), %eax
+		movl	n_right(%ebx), %eax
 		movl	%eax, 8(%ebp)
 		jmp	.loop_max
 	
@@ -312,7 +321,7 @@ successor:
 	movl	8(%ebp), %ebx
 	movl	n_right(%ebx), %ebx
 	cmpl	$0, %ebx
-	je	.get_parent_succssor
+	je	.get_parent_successor
 		
 		movl	8(%ebp), %ebx
 		pushl	n_right(%ebx)
@@ -419,6 +428,64 @@ predeceessor:
 	popl	%ebp
 	ret
 
+##
+# @brief Performs an inorder traversal of the binary search tree rooted at the given node.
+# @details This function traverses the binary search tree in an inorder manner and applies the provided
+#          printing function to each node's data.
+# @param node Pointer to the root of the subtree to traverse.
+# @param printdata Pointer to the function used to print the data of each node.
+# @return None
+##
+# static void inorder(void* node, PRINTDATAPROC printdata)
+	.type	inorder, @function
+inorder:
+	
+	# Prologue
+	pushl	%ebp
+	movl	%esp, %ebp
+
+	# Main Code
+	# if(node->left)
+	movl	8(%ebp), %ebx
+	cmpl	$0, n_left(%ebx)
+	jne		.call_inorder_left
+	jmp		.print_data
+
+	.call_inorder_left:
+		movl	8(%ebp), %ebx
+
+		pushl	12(%ebp)
+		pushl	n_left(%ebx)
+		call	inorder
+		addl	$8, %esp
+
+	.print_data:
+
+	movl	8(%ebp), %ebx
+	movl	12(%ebp), %ecx
+	pushl	n_data(%ebx)
+	call	*%ecx
+	addl	$4, %esp
+
+	# if(node->right)
+	movl	8(%ebp), %ebx
+	cmpl	$0, n_right(%ebx)
+	jne		.call_inorder_right
+	jmp		.epilogue_in
+
+	.call_inorder_right:
+	movl	8(%ebp), %ebx
+	pushl	12(%ebp)
+	pushl	n_right(%ebx)
+	call	inorder
+	addl	$8, %esp
+
+	# Epilogue
+	.epilogue_in:
+	movl	%ebp, %esp
+	popl	%ebp
+	ret
+
 ################### Interface Function ###############
 ##
 # @brief Creates a new binary search tree.
@@ -477,8 +544,8 @@ bst_insert:
 	# Main Code
 	movl	8(%ebp), %ebx
 	cmpl	$0, t_root(%ebx)
-	je	.insert_root
-	jmp	.insert_node
+	je		.insert_root
+	jmp		.insert_node
 
 	.insert_root:
 		pushl	12(%ebp)
@@ -487,14 +554,14 @@ bst_insert:
 
 		movl	8(%ebp), %ebx
 		movl	%eax, t_root(%ebx)
-		jmp	.increase_elmcount
+		jmp		.increase_elmcount
 
 	.insert_node:
 		subl	$8, %esp
 		movl	$0, -4(%ebp)
 		movl	$0, -8(%ebp)
 
-		mobl	8(%ebp), %ebx
+		movl	8(%ebp), %ebx
 		movl	t_root(%ebx), %eax
 		movl	%eax, -4(%ebp)
 
@@ -502,7 +569,7 @@ bst_insert:
 			movl	-4(%ebp), %ebx
 			pushl	n_data(%ebx)
 			pushl	12(%ebp)
-			movl	%16(%ebp), %ecx
+			movl	16(%ebp), %ecx
 			call	*%ecx
 			addl	$8, %esp
 
@@ -512,8 +579,8 @@ bst_insert:
 			je	.ret_error_dap
 			movl	-8(%ebp), %eax
 			cmpl	$CMP_LESS, %eax
-			je	.check_left
-			jmp	.check_right
+			je	.check_left_bi
+			jmp	.check_right_bi
 
 			.ret_error_dap:
 				pushl	$.msg_p_dap
@@ -522,19 +589,19 @@ bst_insert:
 				addl	$8, %esp
 				jmp	.loop_end_in
 
-			.check_left:
+			.check_left_bi:
 				movl	-4(%ebp), %ebx
 				cmpl	$0, n_left(%ebx)
-				jne	.move_left
-				jmp	.insert_left
+				jne	.move_left_bi
+				jmp	.insert_left_bi
 
-				.move_left:
+				.move_left_bi:
 					movl	-4(%ebp), %ebx
 					movl	n_left(%ebx), %eax
 					movl	%eax, -4(%ebp)
 					jmp	.loop_in
 
-				.insert_left:
+				.insert_left_bi:
 					pushl	12(%ebp)
 					call	create_node
 					addl	$4, %esp
@@ -545,21 +612,22 @@ bst_insert:
 					movl	-4(%ebp), %eax
 					movl	n_left(%eax), %ebx
 					movl	%eax, n_parent(%ebx)
-					jmp	.increase_elmcount
+					addl	$8, %esp
+					jmp		.increase_elmcount
 
-			.check_right:
+			.check_right_bi:
 				movl	-4(%ebp), %ebx
 				cmpl	$0, n_right(%ebx)
-				jne	.move_right
-				jmp	.insert_right
+				jne	.move_right_bi
+				jmp	.insert_right_bi
 
-				.move_right:
+				.move_right_bi:
 					movl	-4(%ebp), %ebx
 					movl	n_right(%ebx), %eax
 					movl	%eax, -4(%ebp)
 					jmp	.loop_in
 
-				.insert_right:
+				.insert_right_bi:
 					pushl	12(%ebp)
 					call	create_node
 					addl	$4, %esp
@@ -570,14 +638,14 @@ bst_insert:
 					movl	-4(%ebp), %eax
 					movl	n_right(%eax), %ebx
 					movl	%eax, n_parent(%ebx)
-					jmp	.increase_elmcount
+					addl	$8, %esp
+					jmp		.increase_elmcount
 	
 		.loop_end_in:
 		movl	$1, %eax
 		jmp	.epilogue_bi
 
 		.increase_elmcount:
-		addl	$8, %esp
 
 		movl	8(%ebp), %ebx
 		incl	t_size(%ebx)
@@ -653,7 +721,7 @@ bst_remove:
 		# Check Left
 		.check_left:
 		movl	-4(%ebp), %ebx
-		cmpl	$0, n_left(%ebx
+		cmpl	$0, n_left(%ebx)
 		je	.remove_node
 
 		# Replace with Predecessor
@@ -722,5 +790,33 @@ bst_remove:
 	popl	%ebp
 	ret
 
+##
+# @brief Performs an inorder traversal of the binary search tree.
+# @details This function initiates an inorder traversal of the binary search tree rooted at the given node,
+#          applying the provided printing function to each node's data.
+# @param tree Pointer to the binary search tree.
+# @param printdata Pointer to the function used to print the data of each node.
+# @return None
+##
+#  extern void bst_inorder(void* tree, PRINTDATAPROC printdata)
+	.globl	bst_inorder
+	.type	bst_inorder, @function
+bst_inorder:
+
+	# Prologue
+	pushl	%ebp
+	movl	%esp, %ebp
+
+	# Main Code
+	movl	8(%ebp), %ebx
+	pushl	12(%ebp)
+	pushl	t_root(%ebx)
+	call	inorder
+	addl	$4, %esp
+
+	# Epilogue
+	movl	%ebp, %esp
+	popl	%ebp
+	ret
 
 
