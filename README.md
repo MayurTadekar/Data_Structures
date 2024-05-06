@@ -127,7 +127,7 @@ ld -o output_file -lc -dynamic-linker /lib/ld-linux.so.2 output_file.o driver.o 
 
 ### For C:
 
-Each C directory contains C source files and a driver file. You can compile and run the programs using GCC (GNU Compiler Collection).
+Each C directory contains C source files and a driver file. You can compile and run the programs using gcc (GNU Compiler Collection).
 To compile and run C programs:
 
 ```bash
@@ -138,7 +138,7 @@ gcc -o output_file source_file.c
 
 ### For C++:
 
-Each C++ directory contains C++ source files and a driver file. You can compile and run the programs using G++ (GNU Compiler Collection).
+Each C++ directory contains C++ source files and a driver file. You can compile and run the programs using g++ (GNU Compiler Collection).
 
 To compile and run C++ programs:
 ```bash
