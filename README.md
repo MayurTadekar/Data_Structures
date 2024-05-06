@@ -71,7 +71,7 @@ It is organized into two versions:
    - Description: Implementation of a queue data structure in assembly language.
 
 4. [**Binary Search Tree**](Version_02/00_Assembly/04_BinarySearchTree)
-   - Implementation: `bst.s`, `dcll.s`, `stack.s`
+   - Implementation: `bst.s`, `dcll.s`, `stack.s`, `driver.s`
    - Description: Implementation of a Binary Search Tree in assembly language.
 
 ### C
