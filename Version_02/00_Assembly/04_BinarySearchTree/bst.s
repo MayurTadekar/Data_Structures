@@ -59,6 +59,12 @@
 	.msg_p_1:
 		.string	"1\n"
 
+	.msg_p_2:
+		.string	"\n2\n"
+
+	.msg_p_data:
+		.string "%d\n"
+
 # Section Data
 .section .data
 
@@ -260,6 +266,8 @@ minimum:
 	
 	.loop_end_min:
 
+	movl 	8(%ebp), %eax
+
 	# Epilogue
 	movl	%ebp, %esp
 	popl	%ebp
@@ -292,6 +300,8 @@ maximum:
 		jmp	.loop_max
 	
 	.loop_end_max:
+
+	movl 	8(%ebp), %eax
 
 	# Epilogue
 	movl	%ebp, %esp
@@ -696,10 +706,11 @@ bst_remove:
 		# Check Right
 		movl	-4(%ebp), %ebx
 		cmpl	$0, n_right(%ebx)
-		jne	.replace_succ
-		jmp	.check_left
+		jne		.replace_succ
+		jmp		.check_left
 
 		.replace_succ:
+
 		subl	$4, %esp
 		movl	-4(%ebp), %ebx
 		pushl	n_right(%ebx)
@@ -716,13 +727,14 @@ bst_remove:
 		movl	%eax, -4(%ebp)
 
 		addl	$4, %esp
+
 		jmp	.loop_br
 
 		# Check Left
 		.check_left:
 		movl	-4(%ebp), %ebx
 		cmpl	$0, n_left(%ebx)
-		je	.remove_node
+		je		.remove_node
 
 		# Replace with Predecessor
 		addl	$4, %esp
@@ -774,7 +786,6 @@ bst_remove:
 			movl	$0, n_right(%ebx)
 
 	.loop_end_br:
-
 	pushl	-4(%ebp)
 	call	free
 	addl	$4, %esp

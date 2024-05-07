@@ -78,6 +78,26 @@ _start:
 	call	print_tree
 	addl	$4, %esp
 
+	pushl	$compare
+	pushl	$50
+	pushl	tree
+	call	bst_remove
+	addl	$12, %esp
+
+	pushl	tree
+	call	print_tree
+	addl	$4, %esp
+
+	pushl	$compare
+	pushl	$25
+	pushl	tree
+	call	bst_remove
+	addl	$12, %esp
+
+	pushl	tree
+	call	print_tree
+	addl	$4, %esp
+
 	#Epilogue
 	pushl	$0
 	call	exit
@@ -106,7 +126,7 @@ compare:
 	movl	8(%ebp), %eax
 	movl	12(%ebp), %ebx
 
-	cmpl	%ebx, %eax
+	cmpl	%eax, %ebx
 	je 		.return_same
 	jl		.return_less
 	jmp		.return_greater
