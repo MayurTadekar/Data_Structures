@@ -110,6 +110,10 @@ It is organized into two versions:
    - Implementation: `bst.hpp`, `binarytree.hpp`, `tree.hpp`, `DataNotFoundException.hpp`, `TreeEmptyException.hpp`, `Driver.cpp`
    - Description: Implementation of a binary search tree in C++.
 
+5. [**AVL Tree**](Version_02/02_CPP/05_AVL_Tree)
+   - Implementation: `avl.hpp`, `binarytree.hpp`, `tree.hpp`, `DataNotFoundException.hpp`, `TreeEmptyException.hpp`, `Driver.cpp`
+   - Description: Implementation of a binary search tree in C++.
+
 ## How to Use
 
 ### For x86 Linux Assembly:
