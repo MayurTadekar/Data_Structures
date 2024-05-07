@@ -23,3 +23,8 @@
 	DIR : 04_Binary_Search_Tree
 	Date : Saturday - April 27, 2024 - 3:4:23:615 PM
 }
+
+{
+	DIR : 05_AVL_Tree
+	Date : Tuesday - May 7, 2024 - 4:10:17:592 PM
+}
