@@ -89,7 +89,11 @@ It is organized into two versions:
    - Description: Implementation of a queue data structure in C.
 
 4. [**Binary Search Tree**](Version_02/01_C/04_Binary_Search_Tree)
-   - Implementation: `bst.c`, `dcll.h`, `stack.c`, `driver.c`
+   - Implementation: `bst.c`, `dcll.c`, `stack.c`, `driver.c`
+   - Description: Implementation of a binary search tree in C.
+
+4. [**AVL Tree**](Version_02/01_C/05_AVL_Tree)
+   - Implementation: `avl.c`, `dcll.c`, `stack.c`, `driver.c`
    - Description: Implementation of a binary search tree in C.
 
 ### C++
