@@ -459,7 +459,7 @@ extern	data_t	avl_remove(PAVL tree, data_t data, COMPAREPROC pcompareproc)
 			break;
 		}
 	}
-
+	AVL(node->parent);
 	free(node);
 	tree->nr_elements--;
 	return(to_return_data);

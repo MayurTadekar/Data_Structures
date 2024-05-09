@@ -275,6 +275,9 @@ public:
 					break;
 				}
 			}
+
+			AVL(node->parent());
+
 			delete(node);
 			m_size--;
 			return(deleteData);
