@@ -1,32 +1,17 @@
 
 {
 	FILE : dcll.c
-	Date : Tuesday - May 7, 2024 - 4:10:17:595 PM
+	Date : Friday - May 10, 2024 - 10:18:10:111 PM
 }
 
 {
 	FILE : dcll.h
-	Date : Tuesday - May 7, 2024 - 4:10:17:595 PM
+	Date : Friday - May 10, 2024 - 10:18:10:112 PM
 }
 
 {
 	FILE : driver.c
-	Date : Tuesday - May 7, 2024 - 4:10:17:596 PM
-}
-
-{
-	FILE : stack.c
-	Date : Tuesday - May 7, 2024 - 4:10:17:597 PM
-}
-
-{
-	FILE : stack.h
-	Date : Tuesday - May 7, 2024 - 4:10:17:598 PM
-}
-
-{
-	FILE : CreationTime.txt
-	Date : Tuesday - May 7, 2024 - 8:0:8:693 PM
+	Date : Friday - May 10, 2024 - 10:18:10:112 PM
 }
 
 {
@@ -37,4 +22,19 @@
 {
 	FILE : rbt.h
 	Date : Friday - May 10, 2024 - 10:18:10:109 PM
+}
+
+{
+	FILE : stack.c
+	Date : Friday - May 10, 2024 - 10:18:10:113 PM
+}
+
+{
+	FILE : stack.h
+	Date : Friday - May 10, 2024 - 10:18:10:114 PM
+}
+
+{
+	FILE : CreationTime.txt
+	Date : Saturday - May 11, 2024 - 1:3:27:831 AM
 }
