@@ -75,6 +75,14 @@ private:
 		return(left);
 	}
 
+	/**
+	 * @brief Performs fixup operations after deletion to maintain the red-black tree properties.
+	 * @details This function adjusts the red-black tree structure after a node deletion 
+	 * 			to ensure that the red-black tree properties are preserved. 
+	 * 			It iteratively fixes violations by performing rotations and color adjustments 
+	 * 			starting from the specified node and moving up the tree.
+	 * @param node Pointer to the node from which fixup operations start.
+	 */
 	void InsertFixup(Node node)
 	{
 		// Code
@@ -137,6 +145,20 @@ private:
 		m_root->color(COLOR::BLACK);
 	}
 
+	/**
+	 * @brief Performs fixup operations after deletion to maintain the red-black tree properties.
+	 * @details This function adjusts the red-black tree structure after a node deletion 
+	 * 			to ensure that the red-black tree properties are preserved. 
+	 * 			It iteratively fixes violations by performing rotations and color adjustments 
+	 * 			starting from the specified node and moving up the tree.
+	 * 
+	 * If the color of the node and its parent are both black, it enters a loop to fix violations until the root is reached 
+	 * or a color violation is resolved. 
+	 * It handles two cases depending on whether 
+	 * the node is a left child or a right child of its parent.
+	 * 
+	 * @param node Pointer to the node from which fixup operations start.
+	 */
 	void DeleteFixup(Node node)
 	{
 		// Code
@@ -282,11 +304,21 @@ public:
 	}
  	
  	/**
-     * @brief Removes an element from the binary search tree.
-     * 
-     * @param data The data to be removed from the tree.
-     * @return The data that was removed from the tree.
-     */
+	 * @brief Removes a node with the specified data from the red-black tree.
+	 * @details This function removes a node containing the specified data from the red-black tree. 
+	 * 			It first locates the node with the given data and then performs deletion based on the position of the node in the tree. 
+	 * 			After deletion, it adjusts the tree structure and updates the size of the tree.
+	 * 
+	 * If the node to be removed has both left and right children, 
+	 * it replaces its data with either the maximum value from its right subtree (predecessor) 
+	 * or the minimum value from its left subtree (successor) and 
+	 * then deletes the predecessor or successor node recursively. 
+	 * If the node to be removed has only one child or no children, 
+	 * it simply removes the node and adjusts the tree structure accordingly.
+	 * 
+	 * @param data The data to be removed from the red-black tree.
+	 * @return The data that was removed from the tree.
+	 */
 	T Remove(T data) 
 	{
 		// Code
