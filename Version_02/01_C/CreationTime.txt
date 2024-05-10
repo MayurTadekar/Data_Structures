@@ -28,3 +28,8 @@
 	DIR : 05_AVL_Tree
 	Date : Tuesday - May 7, 2024 - 4:10:17:592 PM
 }
+
+{
+	DIR : 06_Red_Black_Tree
+	Date : Friday - May 10, 2024 - 10:18:10:107 PM
+}
