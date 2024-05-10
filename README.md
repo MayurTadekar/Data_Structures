@@ -74,9 +74,13 @@ It is organized into two versions:
    - Implementation: `bst.s`, `dcll.s`, `stack.s`, `driver.s`
    - Description: Implementation of a Binary Search Tree in assembly language.
 
-4. [**AVL Tree**](Version_02/00_Assembly/05_AVL_Tree)
+5. [**AVL Tree**](Version_02/00_Assembly/05_AVL_Tree)
    - Implementation: `avl.s`, `dcll.s`, `stack.s`, `driver.s`
    - Description: Implementation of a AVL Tree in assembly language.
+
+6. [**Red-Black Tree**](Version_02/00_Assembly/06_Red_Black_tree)
+   - Implementation: `rbt.s`, `dcll.s`, `stack.s`, `driver.s`
+   - Description: Implementation of a Red-Black Tree in assembly language.
 
 ### C
 
