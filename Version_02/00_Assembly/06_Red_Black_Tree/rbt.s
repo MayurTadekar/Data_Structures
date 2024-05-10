@@ -676,6 +676,7 @@ right_rotate:
 # @param tree Pointer to the Red-Black Tree structure.
 # @param node Pointer to the node that may violate Red-Black Tree properties after insertion.
 #
+
 # static insert_fixup(tree, node)
 	.type	insert_fixup, @funciton
 insert_fixup:
