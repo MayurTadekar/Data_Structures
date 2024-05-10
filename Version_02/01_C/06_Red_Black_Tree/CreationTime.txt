@@ -1,15 +1,5 @@
 
 {
-	FILE : avl.c
-	Date : Tuesday - May 7, 2024 - 4:10:17:593 PM
-}
-
-{
-	FILE : avl.h
-	Date : Tuesday - May 7, 2024 - 4:10:17:593 PM
-}
-
-{
 	FILE : dcll.c
 	Date : Tuesday - May 7, 2024 - 4:10:17:595 PM
 }

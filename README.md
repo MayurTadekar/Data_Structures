@@ -96,9 +96,13 @@ It is organized into two versions:
    - Implementation: `bst.c`, `dcll.c`, `stack.c`, `driver.c`
    - Description: Implementation of a binary search tree in C.
 
-4. [**AVL Tree**](Version_02/01_C/05_AVL_Tree)
+5. [**AVL Tree**](Version_02/01_C/05_AVL_Tree)
    - Implementation: `avl.c`, `dcll.c`, `stack.c`, `driver.c`
-   - Description: Implementation of a binary search tree in C.
+   - Description: Implementation of a AVL Tree in C.
+
+6. [**Red-Black Tree**](Version_02/01_C/05_AVL_Tree)
+   - Implementation: `rbt.c`, `dcll.c`, `stack.c`, `driver.c`
+   - Description: Implementation of a Red-Black Tree in C.
 
 ### C++
 
@@ -122,7 +126,7 @@ It is organized into two versions:
    - Implementation: `avl.hpp`, `binarytree.hpp`, `tree.hpp`, `DataNotFoundException.hpp`, `TreeEmptyException.hpp`, `Driver.cpp`
    - Description: Implementation of a AVL Tree in C++.
 
-5. [**Red-Black Tree**](Version_02/02_CPP/05_AVL_Tree)
+6. [**Red-Black Tree**](Version_02/02_CPP/05_AVL_Tree)
    - Implementation: `rbt.hpp`, `binarytree.hpp`, `tree.hpp`, `DataNotFoundException.hpp`, `TreeEmptyException.hpp`, `Driver.cpp`
    - Description: Implementation of a Red Black Tree in C++.
 
