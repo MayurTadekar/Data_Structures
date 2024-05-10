@@ -120,7 +120,11 @@ It is organized into two versions:
 
 5. [**AVL Tree**](Version_02/02_CPP/05_AVL_Tree)
    - Implementation: `avl.hpp`, `binarytree.hpp`, `tree.hpp`, `DataNotFoundException.hpp`, `TreeEmptyException.hpp`, `Driver.cpp`
-   - Description: Implementation of a binary search tree in C++.
+   - Description: Implementation of a AVL Tree in C++.
+
+5. [**Red-Black Tree**](Version_02/02_CPP/05_AVL_Tree)
+   - Implementation: `rbt.hpp`, `binarytree.hpp`, `tree.hpp`, `DataNotFoundException.hpp`, `TreeEmptyException.hpp`, `Driver.cpp`
+   - Description: Implementation of a Red Black Tree in C++.
 
 ## How to Use
 
