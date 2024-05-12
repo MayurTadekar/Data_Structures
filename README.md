@@ -130,9 +130,13 @@ It is organized into two versions:
    - Implementation: `avl.hpp`, `binarytree.hpp`, `tree.hpp`, `DataNotFoundException.hpp`, `TreeEmptyException.hpp`, `Driver.cpp`
    - Description: Implementation of a AVL Tree in C++.
 
-6. [**Red-Black Tree**](Version_02/02_CPP/05_AVL_Tree)
+6. [**Red-Black Tree**](Version_02/02_CPP/06_Red_Black_Tree)
    - Implementation: `rbt.hpp`, `binarytree.hpp`, `tree.hpp`, `DataNotFoundException.hpp`, `TreeEmptyException.hpp`, `Driver.cpp`
    - Description: Implementation of a Red Black Tree in C++.
+
+7. [**Heap**](Version_02/02_CPP/07_Heap)
+   - Implementation:`heap.hpp`, `dcll.hpp`, `Driver.cpp`
+   - Description: Implementation of a Heap in C++.
 
 ## How to Use
 
